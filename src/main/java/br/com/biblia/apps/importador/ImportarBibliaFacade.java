@@ -5,6 +5,7 @@ import java.net.URI;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -56,7 +57,7 @@ public class ImportarBibliaFacade implements ImportarBiblia {
 //				if (enum1 == LivroEnum.MATEUS)
 //					continue;
 //				System.out.println("Inserindo: "+enum1.name());
-				internalImport(LivroEnum.PRIMEIRA_JOAO);
+				internalImport(LivroEnum.LUCAS);
 //			}
 			
 		}
@@ -77,6 +78,8 @@ public class ImportarBibliaFacade implements ImportarBiblia {
 				} else {
 					url = String.format("https://www.biblegateway.com/passage/?search=%s+%s&version=ARC&interface=print", livro.getNomeSemAcentuacao(), capituloId);
 				}
+				System.out.println(url);
+				System.out.println(URI.create(url).toURL());
 				doc = Jsoup.parse(URI.create(url).toURL(), 9000);
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -84,27 +87,17 @@ public class ImportarBibliaFacade implements ImportarBiblia {
 			
 			Elements elements = doc.getElementsByAttributeValueContaining("class", "text "+livro.getSiglaEmIngles());
 			
-			int numeroVersiculo = 0;
+			int numeroVersiculo = 1;
 			List<VersData> versiculos = new ArrayList<>();
 			StringBuffer titulo = new StringBuffer();
 			for (Element e : elements) {
-				String nodeName = e.parent().nodeName();
-				if (numeroVersiculo == 0 && !nodeName.equals("p")) { // titulo capitulo
+				if (!isVersiculo(e, livro)) { // titulo capitulo
 					titulo.append(e.text());
 					jdbcTemplate.update( "UPDATE capitulo SET titulo=? WHERE id=? AND livro_id=?",titulo.toString(), capituloId, livroId);
-					numeroVersiculo++;
-				} else if (numeroVersiculo <= 1 && !nodeName.equals("p")) {
-					titulo.append( " " + e.text());
-					jdbcTemplate.update( "UPDATE capitulo SET titulo=? WHERE id=? AND livro_id=?",titulo.toString(), capituloId, livroId);
 				} else { // versiculo
-					if (nodeName.equals("p")) {
-						if (numeroVersiculo == 0) {
-							numeroVersiculo++;
-						}
-						String versiculo = e.text().substring(2);
-						versiculos.add( new VersData(versiculo, numeroVersiculo, capituloId, livroId) );
-						numeroVersiculo++;
-					}
+					String versiculo = e.text().substring(2);
+					versiculos.add( new VersData(versiculo, numeroVersiculo, capituloId, livroId) );
+					numeroVersiculo++;
 				}
 			}
 			
@@ -147,6 +140,15 @@ public class ImportarBibliaFacade implements ImportarBiblia {
 		}
 	}
 	
+	private static boolean isVersiculo(Element e, LivroEnum livro) {
+		String nodeName = e.parent().nodeName();
+		
+		boolean hasClassVersiculo = e.classNames().stream()
+									 .filter(i -> i.contains(livro.getSiglaEmIngles())).toArray().length != 0;
+		
+		return hasClassVersiculo && nodeName.equals("p");
+	}
+
 	@Data
 	@AllArgsConstructor
 	static class VersData {
