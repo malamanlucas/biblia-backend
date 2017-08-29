@@ -133,14 +133,18 @@ public enum LivroEnum {
 	}
 
 	public boolean isStartingWithNumber() {
-//		return this == PRIMEIRO_SAMUEL || this == SEGUNDO_SAMUEL || 
-//			   this == LivroEnum.PRIMEIRO_REIS || this == LivroEnum.SEGUNDO_REIS ||
-//			   this == PRIMEIRO_CRONICAS || this == SEGUNDO_CRONICAS;
-		return this == PRIMEIRA_CORINTIOS || this == LivroEnum.SEGUNDA_CORINTIOS ||
+		return this == PRIMEIRO_SAMUEL || this == SEGUNDO_SAMUEL || 
+			   this == LivroEnum.PRIMEIRO_REIS || this == LivroEnum.SEGUNDO_REIS ||
+			   this == PRIMEIRO_CRONICAS || this == SEGUNDO_CRONICAS ||
+			   this == PRIMEIRA_CORINTIOS || this == LivroEnum.SEGUNDA_CORINTIOS ||
 			   this == PRIMEIRA_TESSALONICENSES || this == LivroEnum.PRIMEIRA_JOAO ||
 			   this == PRIMEIRA_PEDRO || this == PRIMEIRA_TIMOTEO || 
 			   this == SEGUNDA_JOAO || this == SEGUNDA_PEDRO || this == SEGUNDA_TESSALONICENSES ||
 			   this == SEGUNDA_TIMOTEO || this == TERCEIRA_JOAO;
+	}
+
+	public boolean isNovoTestamento() {
+		return this.idioma == Idioma.GREGO;
 	}
 	
 	
