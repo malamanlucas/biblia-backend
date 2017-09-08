@@ -60,7 +60,7 @@ public class Expressao implements Serializable {
 	})
 	private Versiculo versiculo;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="expressao")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy="expressao")
 	private List<ExpressaoDicionario> dicionarios;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="expressao")
