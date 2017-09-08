@@ -10,7 +10,6 @@ import org.springframework.util.CollectionUtils;
 
 import br.com.biblia.dao.ExpressaoDAO;
 import br.com.biblia.model.versiculo.Expressao;
-import br.com.biblia.model.versiculo.ExpressaoKey;
 import br.com.biblia.model.versiculo.VersiculoKey;
 
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -46,8 +45,7 @@ public class ExpressaoFacade implements ExpressaoApp {
 	}
 
 	@Override
-	public Expressao findByKeyAndInicioAndFim(ExpressaoKey key, Integer inicio, Integer fim) {
-		VersiculoKey versiculoKey = new VersiculoKey(key.getVersiculoId(), key.getCapituloId(), key.getLivroId());
+	public Expressao findByKeyAndInicioAndFim(VersiculoKey versiculoKey, Integer inicio, Integer fim) {
 		return dao.findByKeyAndInicioAndFim(versiculoKey, inicio, fim);
 	}
 

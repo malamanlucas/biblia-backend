@@ -52,7 +52,7 @@ public class ExpressaoDAOTest extends ExpressaoBaseTest {
     	Expressao expressaoExpected = garantirExpressao();
     	ExpressaoKey expressaoKey = expressaoExpected.getKey();
     	VersiculoKey key = new VersiculoKey(expressaoKey.getVersiculoId(), expressaoKey.getCapituloId(), expressaoKey.getLivroId());
-		Expressao expressaoFinded = dao.findByKeyAndInicioAndFim(key, expressaoExpected.getInicio(), expressaoExpected.getFim());
+    	Expressao expressaoFinded = dao.findByKeyAndInicioAndFim(key, expressaoExpected.getInicio(), expressaoExpected.getFim());
     	Assert.assertNotNull( expressaoFinded );
     	Assert.assertEquals( expressaoExpected, expressaoFinded );
     }
@@ -62,7 +62,7 @@ public class ExpressaoDAOTest extends ExpressaoBaseTest {
     	Expressao expressaoExpected = garantirExpressao();
     	ExpressaoKey expressaoKey = expressaoExpected.getKey();
     	VersiculoKey key = new VersiculoKey(expressaoKey.getVersiculoId(), expressaoKey.getCapituloId(), expressaoKey.getLivroId());
-		Expressao expressaoFinded = dao.findByKeyAndInicioAndFim(key, -1231, -3495);
+    	Expressao expressaoFinded = dao.findByKeyAndInicioAndFim(key, -1231, -3495);
     	Assert.assertNull( expressaoFinded );
     }
     
