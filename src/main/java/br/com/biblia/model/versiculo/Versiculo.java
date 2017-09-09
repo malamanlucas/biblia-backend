@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import br.com.biblia.enums.Idioma;
@@ -52,6 +53,7 @@ public class Versiculo {
 	private Capitulo capitulo;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="versiculo")
+	@OrderBy("fim")
 	private List<Expressao> expressoes;
 	
 	public String textoSemFormatacao() {

@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,10 +42,13 @@ public class Expressao implements Serializable {
 	@EmbeddedId
 	private ExpressaoKey key = new ExpressaoKey();
 	
+	@NotNull
 	private Integer inicio;
 	
+	@NotNull
 	private Integer fim;
 	
+	@NotNull
 	private String texto;
 	
 	private String descricao;

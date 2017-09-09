@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import com.google.common.collect.Lists;
+
 import br.com.biblia.dao.ExpressaoDAO;
 import br.com.biblia.model.versiculo.Expressao;
 import br.com.biblia.model.versiculo.VersiculoKey;
@@ -34,11 +36,16 @@ public class ExpressaoFacade implements ExpressaoApp {
 			
 			if ( expressao.getDicionarios() != null ) {
 				expressao.getDicionarios().forEach( t -> t.getKey().setExpressaoKey( expressao.getKey() ) );
+			} else {
+				expressao.setDicionarios(Lists.newArrayList());
 			}
 			
 			if ( expressao.getMapas() != null ) {
 				expressao.getMapas().forEach( t -> t.getKey().setExpressaoKey( expressao.getKey() ) );
+			} else {
+				expressao.setMapas(Lists.newArrayList());
 			}
+			
 			return dao.save(expressao);
 		}
 		
