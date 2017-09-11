@@ -1,4 +1,4 @@
-package br.com.biblia.test;
+package br.com.biblia.test.dao;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,6 +31,14 @@ public class ExpressaoDAOTest extends ExpressaoBaseTest {
 	
     @Autowired
     private VersiculoDAO versiculoDAO;
+    
+    @Test
+    public void testDeleteWhenExists() {
+		Expressao expressaoExpected = garantirExpressao();
+		ExpressaoKey expressaoKey = expressaoExpected.getKey();
+    	dao.delete(expressaoExpected);
+    	Assert.assertNull(dao.findOne(expressaoKey));
+    }
     
     @Test
     public void testDeleteByKeyAndByRange() {

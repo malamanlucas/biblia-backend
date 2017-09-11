@@ -1,4 +1,4 @@
-package br.com.biblia.test;
+package br.com.biblia.test.app;
 
 import java.util.List;
 
@@ -26,6 +26,7 @@ import br.com.biblia.model.versiculo.ExpressaoDicionario;
 import br.com.biblia.model.versiculo.ExpressaoKey;
 import br.com.biblia.model.versiculo.ExpressaoMapa;
 import br.com.biblia.model.versiculo.Versiculo;
+import br.com.biblia.model.versiculo.VersiculoKey;
 import br.com.biblia.test.base.ExpressaoBaseTest;
 
 @RunWith(SpringRunner.class)
@@ -45,6 +46,43 @@ public class ExpressaoAppTest extends ExpressaoBaseTest {
 	
 	@Autowired
 	private MapaDAO mapaDAO;
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldDoErrorWhenTestDeleteWhenKeyIsNull() {
+		app.delete(null);
+	}
+	
+	@Test
+	public void testDeleteWhenExpressaoExists() {
+		ExpressaoKey key = garantirExpressao().getKey();
+		app.delete(key);
+		Assert.assertNull(dao.findOne(key));
+	}
+	
+	@Test
+	public void testFindWhenExpressaoExists() {
+		Expressao expressao = garantirExpressao();
+		VersiculoKey versiculoKey = VersiculoKey
+				.builder()
+				.capituloId(expressao.getKey().getCapituloId())
+				.id(expressao.getKey().getVersiculoId())
+				.livroId(expressao.getKey().getLivroId())
+				.build();
+		Expressao expressaoFinded = app.findByKeyAndInicioAndFim(versiculoKey, expressao.getInicio(), expressao.getFim());
+		genericAssert(expressaoFinded);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldDoErrorWhenFindExpressaoInexistent() {
+		VersiculoKey versiculoKey = VersiculoKey
+				.builder()
+				.capituloId(-9)
+				.id(-9)
+				.livroId(-9)
+				.build();
+		Expressao expressaoFinded = app.findByKeyAndInicioAndFim(versiculoKey, -9, -9);
+		System.out.println(expressaoFinded);
+	}
 	
 	@Test
 	public void testSaveWhenDoesNotHaveAnyExpressionAndAnyDicionaryAndAnyMapa() {
@@ -74,6 +112,14 @@ public class ExpressaoAppTest extends ExpressaoBaseTest {
 		Assert.assertNotNull( dicionarioDAO.findOne(dicionario.getKey()) );
 		Assert.assertNotNull( mapaDAO.findOne(mapa.getId()) );
 		
+		genericAssert(expressaoInBD);
+		
+		assertDicionarios( expressao.getDicionarios() );
+		assertMapas( expressao.getMapas() );
+		
+	}
+
+	private void genericAssert(Expressao expressaoInBD) {
 		Assert.assertNotNull(expressaoInBD);
 		Assert.assertNotNull(expressaoInBD.getDescricao());
 		Assert.assertNotNull(expressaoInBD.getTexto());
@@ -83,10 +129,6 @@ public class ExpressaoAppTest extends ExpressaoBaseTest {
 		
 		assertExpressaoKey( expressaoInBD.getKey() );
 		Assert.assertEquals( new Integer(1), expressaoInBD.getKey().getExpressaoId() );
-		
-		assertDicionarios( expressao.getDicionarios() );
-		assertMapas( expressao.getMapas() );
-		
 	}
 	
 	@Test
@@ -105,15 +147,7 @@ public class ExpressaoAppTest extends ExpressaoBaseTest {
 		
 		Expressao expressaoInBD = dao.getOne( expressao.getKey() );
 		
-		Assert.assertNotNull(expressaoInBD);
-		Assert.assertNotNull(expressaoInBD.getDescricao());
-		Assert.assertNotNull(expressaoInBD.getTexto());
-		Assert.assertNotNull(expressaoInBD.getFim());
-		Assert.assertNotNull(expressaoInBD.getInicio());
-		Assert.assertNotNull(expressaoInBD.getFim());
-		
-		assertExpressaoKey( expressaoInBD.getKey() );
-		Assert.assertEquals( new Integer(1), expressaoInBD.getKey().getExpressaoId() );
+		genericAssert(expressaoInBD);
 		
 		assertDicionarios( expressao.getDicionarios() );
 		assertMapas( expressao.getMapas() );

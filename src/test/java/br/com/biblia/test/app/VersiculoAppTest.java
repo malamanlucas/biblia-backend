@@ -1,4 +1,4 @@
-package br.com.biblia.test;
+package br.com.biblia.test.app;
 
 import java.util.List;
 
@@ -37,6 +37,24 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 	
 	@Autowired
 	private VersiculoApp app;
+	
+	@Test
+	public void testFindOneWhenExists() {
+		Versiculo mateus1_1 = getMateus1_1();
+		Versiculo versiculoFinded = app.findOne(mateus1_1.getKey());
+		Assert.assertNotNull(versiculoFinded);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldDoErrorFindOneInexistent() {
+		VersiculoKey key = VersiculoKey
+							.builder()
+							.id(-1)
+							.capituloId(-3)
+							.livroId(-5123)
+							.build();
+		app.findOne(key);
+	}
 	
 	@Test
 	public void testSearchSentencasByTermo() {

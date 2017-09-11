@@ -1,4 +1,4 @@
-package br.com.biblia.test;
+package br.com.biblia.test.dao;
 
 import java.util.List;
 

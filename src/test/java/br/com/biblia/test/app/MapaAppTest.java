@@ -1,4 +1,4 @@
-package br.com.biblia.test;
+package br.com.biblia.test.app;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

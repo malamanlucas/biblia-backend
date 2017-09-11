@@ -21,7 +21,9 @@ public interface VersiculoApp {
 	void salvarExpressao(Expressao expressao);
 
 	Integer qtdOcorrenciasTermo(String termo);
-
+	
+	Versiculo findOne(VersiculoKey key);
+	
 	List<Sentenca> searchSentencasByTermo(String string);
 	
 }

@@ -8,10 +8,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import br.com.biblia.dao.ExpressaoDAO;
 import br.com.biblia.model.versiculo.Expressao;
+import br.com.biblia.model.versiculo.ExpressaoKey;
 import br.com.biblia.model.versiculo.VersiculoKey;
 
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -53,7 +55,15 @@ public class ExpressaoFacade implements ExpressaoApp {
 
 	@Override
 	public Expressao findByKeyAndInicioAndFim(VersiculoKey versiculoKey, Integer inicio, Integer fim) {
-		return dao.findByKeyAndInicioAndFim(versiculoKey, inicio, fim);
+		Expressao result = dao.findByKeyAndInicioAndFim(versiculoKey, inicio, fim);
+		Preconditions.checkNotNull(result);
+		return result;
+	}
+
+	@Override
+	public void delete(ExpressaoKey expressaoKey) {
+		Preconditions.checkNotNull(expressaoKey);
+		dao.delete(expressaoKey);
 	}
 
 	

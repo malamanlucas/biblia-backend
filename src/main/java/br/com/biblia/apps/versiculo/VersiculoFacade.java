@@ -7,6 +7,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Preconditions;
+
 import br.com.biblia.apps.dicionario.DicionarioApp;
 import br.com.biblia.dao.SentencaDAO;
 import br.com.biblia.dao.VersiculoDAO;
@@ -95,6 +97,17 @@ public class VersiculoFacade implements VersiculoApp {
 	@Override
 	public List<Sentenca> searchSentencasByTermo(String termo) {
 		return sentencaDAO.searchByTermo(termo);
+	}
+
+	@Override
+	public Versiculo findOne(VersiculoKey key) {
+		Preconditions.checkNotNull(key);
+		Preconditions.checkNotNull(key.getId());
+		Preconditions.checkNotNull(key.getCapituloId());
+		Preconditions.checkNotNull(key.getLivroId());
+		Versiculo result = dao.findOne(key);
+		Preconditions.checkNotNull(result);
+		return result;
 	}
 	
 }

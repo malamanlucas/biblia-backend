@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.biblia.apps.expressao.ExpressaoApp;
 import br.com.biblia.model.versiculo.Expressao;
+import br.com.biblia.model.versiculo.ExpressaoKey;
 import br.com.biblia.model.versiculo.VersiculoKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,11 @@ public class ExpressaoRestController {
 	@PostMapping("/save")
 	public void save(@Valid @RequestBody Expressao expressao) {
 		app.save(expressao);
+	}
+	
+	@PostMapping("/delete")
+	public void delete(@Valid @RequestBody ExpressaoKey expressaoKey) {
+		app.delete(expressaoKey);
 	}
 	
     @PostMapping(value="/search")
