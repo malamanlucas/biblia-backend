@@ -14,6 +14,14 @@ CREATE TABLE livro (
 	abreviacao VARCHAR(4)  NOT NULL
 );
 
+CREATE TABLE livro_detalhe (
+	livro_id      INTEGER NOT NULL,
+	data_criacao  DATE    NOT NULL,
+	autor         TEXT    NOT NULL,
+	data_local    TEXT    NOT NULL,
+	tema          TEXT    NOT NULL
+);
+
 CREATE TABLE capitulo (
 	id       INTEGER NOT NULL,
 	livro_id INTEGER NOT NULL,
@@ -85,6 +93,9 @@ ALTER TABLE message ADD CONSTRAINT message_pk PRIMARY KEY(id);
 ALTER TABLE livro ADD CONSTRAINT livro_pk PRIMARY KEY(id);
 ALTER TABLE livro ADD CONSTRAINT livro_unique UNIQUE(nome);
 ALTER TABLE dicionario ADD CONSTRAINT dicionario_pk PRIMARY KEY(id, idioma);
+
+ALTER TABLE livro_detalhe ADD CONSTRAINT livro_detalhe_pk PRIMARY KEY(livro_id);
+ALTER TABLE livro_detalhe ADD CONSTRAINT livro_detalhe_fk FOREIGN KEY(livro_id) REFERENCES livro(id) ON DELETE CASCADE;
 
 ALTER TABLE capitulo ADD CONSTRAINT capitulo_pk PRIMARY KEY(id, livro_id);
 ALTER TABLE capitulo ADD CONSTRAINT capitulo_livro_pk FOREIGN KEY(livro_id) REFERENCES livro(id) ON DELETE CASCADE;

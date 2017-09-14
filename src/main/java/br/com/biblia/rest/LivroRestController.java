@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.biblia.apps.livro.LivroApp;
 import br.com.biblia.enums.Testamento;
-import br.com.biblia.model.Livro;
+import br.com.biblia.model.livro.Livro;
 
 @RestController
 @RequestMapping("/api/livros")

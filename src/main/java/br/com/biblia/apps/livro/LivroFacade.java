@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.biblia.dao.LivroDAO;
 import br.com.biblia.enums.Testamento;
-import br.com.biblia.model.Livro;
+import br.com.biblia.model.livro.Livro;
 
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Service

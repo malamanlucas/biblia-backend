@@ -3,7 +3,7 @@ package br.com.biblia.apps.livro;
 import java.util.List;
 
 import br.com.biblia.enums.Testamento;
-import br.com.biblia.model.Livro;
+import br.com.biblia.model.livro.Livro;
 
 public interface LivroApp {
 

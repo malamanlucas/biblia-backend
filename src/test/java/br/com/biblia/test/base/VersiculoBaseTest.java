@@ -12,7 +12,7 @@ import br.com.biblia.dao.LivroDAO;
 import br.com.biblia.dao.VersiculoDAO;
 import br.com.biblia.enums.LivroEnum;
 import br.com.biblia.model.CapituloKey;
-import br.com.biblia.model.Livro;
+import br.com.biblia.model.livro.Livro;
 import br.com.biblia.model.versiculo.Versiculo;
 
 @Sql(executionPhase=ExecutionPhase.BEFORE_TEST_METHOD, statements="DELETE FROM expressao")

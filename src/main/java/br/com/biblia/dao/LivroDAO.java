@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import br.com.biblia.enums.Testamento;
-import br.com.biblia.model.Livro;
+import br.com.biblia.model.livro.Livro;
 
 public interface LivroDAO extends JpaRepository<Livro, Integer> {
 
