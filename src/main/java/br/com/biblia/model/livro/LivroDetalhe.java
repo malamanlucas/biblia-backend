@@ -12,12 +12,13 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="livro_detalhe")
-@Data
+@Data @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class LivroDetalhe {
