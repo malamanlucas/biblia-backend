@@ -1,30 +1,17 @@
 package br.com.biblia;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.google.common.collect.Lists;
 
 public class Main {
 
 	public static void main(String[] args) {
-
-//		String[] classNames = new String[] { "text", "Luke-12-1" };
-//		Set<String> classNames = new HashSet<>();
-//		classNames.add("text");
-//		classNames.add("Luke-12-1");
-//		
-//		Object[] listFounded = classNames.stream()
-//				 .filter(i -> i.contains("Luke")).toArray();
-//		
-//		boolean hasClassVersiculo = listFounded.length != 0;
-//		
-//		System.out.println(listFounded.length);
-//		System.out.println(hasClassVersiculo);
 		
-		String s = "qweqeqw21321";
-		
-		System.out.println(s.replaceAll("\\d", ""));
-		
+		List<Integer> s = Lists.newArrayList(4,7,1);
+			
+		System.out.println(s.stream().filter(f -> false).collect(Collectors.toList()));
 		
 	}
 	

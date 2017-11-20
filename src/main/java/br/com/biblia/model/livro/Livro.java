@@ -11,11 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.collect.Lists;
 
 import br.com.biblia.enums.Testamento;
 import br.com.biblia.model.Capitulo;
+import br.com.biblia.model.versiculo.Versiculo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,5 +54,8 @@ public class Livro {
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="livro")
 	private LivroDetalhe detalhe;
+	
+	@Transient
+	private List<Versiculo> versiculos = Lists.newArrayList();
 		
 }

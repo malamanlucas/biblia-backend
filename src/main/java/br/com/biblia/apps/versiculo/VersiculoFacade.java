@@ -109,5 +109,10 @@ public class VersiculoFacade implements VersiculoApp {
 		Preconditions.checkNotNull(result);
 		return result;
 	}
+
+	@Override
+	public List<Sentenca> searchSentencasByCoordenates(String termo) {
+		return null;
+	}
 	
 }
