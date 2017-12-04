@@ -1,4 +1,4 @@
-package br.com.biblia.model;
+package br.com.biblia.model.sentenca;
 
 import java.io.Serializable;
 

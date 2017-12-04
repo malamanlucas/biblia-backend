@@ -56,14 +56,11 @@ public abstract class VersiculoBaseTest {
 	
 	protected Capitulo getMateus1_10ao13() {
 		Capitulo capitulo = this.getMateus().getCapitulos().get(0);
-		capitulo.getVersiculos().stream().filter(v -> {
+		List<Versiculo> verisculosFiltered = capitulo.getVersiculos().stream().filter(v -> {
 			Integer id = v.getKey().getId();
 			return id >= 10 && id <= 13;
 		}).collect(Collectors.toList());
-//		capitulo.getVersiculos().stream().filter(v -> {
-//			Integer id = v.getKey().getId();
-//			return id >= 10 && id <= 13;
-//		}).collect(Collectors.toList());
+		capitulo.setVersiculos(verisculosFiltered);
 		return capitulo;
 	}
 	

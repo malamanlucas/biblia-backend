@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Maps;
 
 import br.com.biblia.apps.versiculo.VersiculoApp;
-import br.com.biblia.model.Sentenca;
+import br.com.biblia.model.sentenca.Sentenca;
 
 @RestController
 @RequestMapping("/api/sentencas")

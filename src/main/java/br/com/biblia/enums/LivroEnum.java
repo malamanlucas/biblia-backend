@@ -78,6 +78,7 @@ public enum LivroEnum {
 	
 	private static Map<String, LivroEnum> map;
 	private static Map<String, LivroEnum> mapNome;
+	private static Map<String, LivroEnum> mapSiglaPortugues;
 	
 	static {
 		map = new HashMap<>();
@@ -85,6 +86,15 @@ public enum LivroEnum {
 		LivroEnum[] values = LivroEnum.values();
 		for (LivroEnum livroEnum : values) {
 			map.put(livroEnum.getNomeSemAcentuacao(), livroEnum);
+		}
+	}
+	
+	static {
+		mapSiglaPortugues = new HashMap<>();
+		
+		LivroEnum[] values = LivroEnum.values();
+		for (LivroEnum livroEnum : values) {
+			mapSiglaPortugues.put(livroEnum.getSiglaEmPortugues(), livroEnum);
 		}
 	}
 	
@@ -103,6 +113,10 @@ public enum LivroEnum {
 	
 	public static LivroEnum fromNomeBD(String nomeBD) {
 		return mapNome.get(nomeBD);
+	}
+	
+	public static LivroEnum fromSiglaPortugues(String siglaPortugues) {
+		return mapSiglaPortugues.get(siglaPortugues);
 	}
 	
 	@Getter
@@ -146,6 +160,7 @@ public enum LivroEnum {
 	public boolean isNovoTestamento() {
 		return this.idioma == Idioma.GREGO;
 	}
+
 	
 	
 }

@@ -13,8 +13,11 @@ import br.com.biblia.apps.dicionario.DicionarioApp;
 import br.com.biblia.dao.SentencaDAO;
 import br.com.biblia.dao.VersiculoDAO;
 import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.LivroEnum;
 import br.com.biblia.model.CapituloKey;
-import br.com.biblia.model.Sentenca;
+import br.com.biblia.model.sentenca.Between;
+import br.com.biblia.model.sentenca.Cordenada;
+import br.com.biblia.model.sentenca.Sentenca;
 import br.com.biblia.model.versiculo.Expressao;
 import br.com.biblia.model.versiculo.Versiculo;
 import br.com.biblia.model.versiculo.VersiculoKey;
@@ -111,8 +114,15 @@ public class VersiculoFacade implements VersiculoApp {
 	}
 
 	@Override
-	public List<Sentenca> searchSentencasByCoordenates(String termo) {
-		return null;
+	public List<Sentenca> searchSentencasByCordenada(String cordenada) {
+		String[] options = cordenada.split(" ");
+		String[] betweens = options[1].split("[.|-]");
+		Cordenada cordenadaObject = Cordenada.builder()
+								.livroEnum(LivroEnum.fromSiglaPortugues(options[0]))
+								.capitulos(new Between(Integer.valueOf(betweens[0]), Integer.valueOf(betweens[0])))
+								.versiculos(new Between(Integer.valueOf(betweens[1]), Integer.valueOf(betweens[2])))
+								.build();
+		return sentencaDAO.searchByCordenada(cordenadaObject);
 	}
 	
 }

@@ -17,7 +17,7 @@ import br.com.biblia.Application;
 import br.com.biblia.apps.versiculo.VersiculoApp;
 import br.com.biblia.dao.VersiculoDAO;
 import br.com.biblia.enums.Idioma;
-import br.com.biblia.model.Sentenca;
+import br.com.biblia.model.sentenca.Sentenca;
 import br.com.biblia.model.versiculo.Expressao;
 import br.com.biblia.model.versiculo.ExpressaoDicionario;
 import br.com.biblia.model.versiculo.ExpressaoDicionarioKey;
