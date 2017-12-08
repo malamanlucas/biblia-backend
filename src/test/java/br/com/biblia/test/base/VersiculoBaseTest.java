@@ -50,6 +50,26 @@ public abstract class VersiculoBaseTest {
 		return mateus;
 	}
 	
+	private Livro get1Corintios() {
+		Livro mateus = livroDAO.findByNome(LivroEnum.PRIMEIRA_CORINTIOS.getNomeNoBD());
+		mateus.getCapitulos().sort((a,b) -> a.getKey().getId() > b.getKey().getId() ? 1 : -1);
+		mateus.getCapitulos().forEach(c -> {
+			c.setVersiculos(versiculoDAO.search(c.getKey()));
+			mateus.getVersiculos().addAll(versiculoDAO.search(c.getKey()));
+		});
+		return mateus;
+	}
+	
+	protected Capitulo get1Corintios1_4() {
+		Capitulo capitulo = this.get1Corintios().getCapitulos().get(0);
+		List<Versiculo> verisculosFiltered = capitulo.getVersiculos().stream().filter(v -> {
+			Integer id = v.getKey().getId();
+			return id == 4;
+		}).collect(Collectors.toList());
+		capitulo.setVersiculos(verisculosFiltered);
+		return capitulo;
+	}
+	
 	protected Capitulo getMateus1() {
 		return this.getMateus().getCapitulos().get(0);
 	}

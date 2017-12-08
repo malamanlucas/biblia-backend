@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
 
-import br.com.biblia.apps.versiculo.VersiculoApp;
+import br.com.biblia.apps.sentenca.SentencaApp;
+import br.com.biblia.enums.LivroEnum;
 import br.com.biblia.model.sentenca.Sentenca;
 
 @RestController
@@ -19,16 +20,21 @@ import br.com.biblia.model.sentenca.Sentenca;
 public class SentencaRestController {
 
 	@Autowired
-    private VersiculoApp versiculoApp;
+    private SentencaApp app;
     
     @GetMapping(value="/")
     public List<Sentenca> findAll(String termo) {
-        return versiculoApp.searchSentencasByTermo(termo);
+        return app.searchSentencasByTermo(termo);
     }
     
     @GetMapping(value="/format")
     public Map<String, Object> format(String termo) {
-    	List<Sentenca> result = versiculoApp.searchSentencasByTermo(termo);
+    	List<Sentenca> result = null;
+		if (needSearchByCordenada(termo)) {
+			result = app.searchSentencasByCordenada(termo);
+		} else {
+			result = app.searchSentencasByTermo(termo);
+		}
 		List<String> textos = result.stream().map(e -> e.getTextoMontado()).collect(Collectors.toList());
 		
 		Map<String, Object> map = Maps.newHashMap();
@@ -39,6 +45,14 @@ public class SentencaRestController {
 		
 		return map;
     }
-    
+
+	private boolean needSearchByCordenada(String termo) {
+		int lastIndex = termo.indexOf(' ');
+		if (lastIndex == -1) {
+			lastIndex = termo.length();
+		}
+		return Character.isDigit(termo.charAt(0)) ||
+		 LivroEnum.fromSiglaPortugues(termo.substring(0, lastIndex)) != null;
+	}
 	
 }

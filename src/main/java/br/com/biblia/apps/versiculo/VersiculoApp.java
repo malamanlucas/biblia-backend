@@ -24,8 +24,4 @@ public interface VersiculoApp {
 	
 	Versiculo findOne(VersiculoKey key);
 	
-	List<Sentenca> searchSentencasByTermo(String termo);
-	
-	List<Sentenca> searchSentencasByCordenada(String termo);
-	
 }

@@ -16,6 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.biblia.Application;
+import br.com.biblia.apps.sentenca.SentencaApp;
 import br.com.biblia.apps.versiculo.VersiculoApp;
 import br.com.biblia.dao.VersiculoDAO;
 import br.com.biblia.model.sentenca.Sentenca;
@@ -25,28 +26,37 @@ import br.com.biblia.test.base.VersiculoBaseTest;
 @SpringBootTest(classes=Application.class, webEnvironment=WebEnvironment.MOCK)
 @Transactional
 @Rollback
-public class VersiculoAppSearchByTermCoordinatesTest extends VersiculoBaseTest {
+public class SentencaAppTest extends VersiculoBaseTest {
 
 	@Autowired
-	VersiculoApp app;
+	SentencaApp app;
 	
-	@Autowired
-	VersiculoDAO dao;
+	@Test
+	public void testSearchSentencasByTermo() {
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("trombeta");
+		Assert.assertNotNull(lstSentenca);
+		Assert.assertEquals(74, lstSentenca.size());
+	}
+	
+	@Test
+	public void testSearchSentencasByTermoWhenIsUppercase() {
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("TrOmBetA");
+		Assert.assertNotNull(lstSentenca);
+		Assert.assertEquals(74, lstSentenca.size());
+	}
 	
 	@Test
 	public void deveTrazerTodosOsVersiculosDeMateus() {
 		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt");
 		Assert.assertNotNull(sentencasFounded);
-		Assert.assertEquals(sentencasFounded.size(), getAllVersiculosMateus().size());
+		Assert.assertEquals(getAllVersiculosMateus().size(), sentencasFounded.size());
 	}
-	
 	
 	@Test
 	public void deveTrazerTodosOsVersiculosDeMateus1() {
-		System.out.println(getMateus1().getVersiculos().size());
 		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1");
 		Assert.assertNotNull(sentencasFounded);
-		Assert.assertEquals(sentencasFounded.size(), getMateus1().getVersiculos().size());
+		Assert.assertEquals(getMateus1().getVersiculos().size(), sentencasFounded.size());
 	}
 	
 	@Test
@@ -54,7 +64,23 @@ public class VersiculoAppSearchByTermCoordinatesTest extends VersiculoBaseTest {
 		System.out.println(getMateus1().getVersiculos().size());
 		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1.10-13");
 		Assert.assertNotNull(sentencasFounded);
-		Assert.assertEquals(sentencasFounded.size(), getMateus1_10ao13().getVersiculos().size());
+		Assert.assertEquals(getMateus1_10ao13().getVersiculos().size(), sentencasFounded.size());
+	}
+	
+	@Test
+	public void deveTrazerTodosOsVersiculosDeMateus1_2() {
+		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1.2");
+		Assert.assertNotNull(sentencasFounded);
+		Assert.assertEquals(1, sentencasFounded.size());
+		Assert.assertEquals(getMateus1_2().getTexto(), sentencasFounded.get(0).getTexto());
+	}
+	
+	@Test
+	public void deveTrazerTodosOsVersiculosDe1Corintios1_4() {
+		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("1 Co 1.4");
+		Assert.assertNotNull(sentencasFounded);
+		Assert.assertEquals(get1Corintios1_4().getVersiculos().size(), sentencasFounded.size());
+		Assert.assertEquals(get1Corintios1_4().getVersiculos().get(0).getTexto(), sentencasFounded.get(0).getTexto());
 	}
 	
 	
