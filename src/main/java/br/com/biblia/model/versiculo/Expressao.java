@@ -60,7 +60,8 @@ public class Expressao implements Serializable {
 	@JoinColumns({
 		@JoinColumn(name="versiculo_id", referencedColumnName="id", insertable=false, updatable=false),
 		@JoinColumn(name="capitulo_id", referencedColumnName="capitulo_id", insertable=false, updatable=false),
-		@JoinColumn(name="livro_id", referencedColumnName="livro_id", insertable=false, updatable=false)
+		@JoinColumn(name="livro_id", referencedColumnName="livro_id", insertable=false, updatable=false),
+		@JoinColumn(name="versao_id", referencedColumnName="versao_id", insertable=false, updatable=false)
 	})
 	private Versiculo versiculo;
 	
@@ -77,7 +78,7 @@ public class Expressao implements Serializable {
 										.forType(VersiculoKey.class)
 										.readValue( json );
 			VersiculoKey versiculoKey = ((VersiculoKey) value);
-			this.key = new ExpressaoKey(null, versiculoKey.getId(), versiculoKey.getCapituloId(), versiculoKey.getLivroId());
+			this.key = new ExpressaoKey(null, versiculoKey.getId(), versiculoKey.getCapituloId(), versiculoKey.getLivroId(), versiculoKey.getVersaoId());
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage(),e);
 		}

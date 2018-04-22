@@ -46,10 +46,10 @@ public class CapituloFacade implements CapituloApp {
 	}
 
 	@Override
-	public void save(Integer livroId, Integer capitulos) {
+	public void save(Integer livroId, Integer capitulos, Integer versaoId) {
 		List<Capitulo> list = new ArrayList<>();
 		for (int i = 1; i <= capitulos; i++) {
-			list.add( new Capitulo( new CapituloKey(i, livroId) ) );
+			list.add( new Capitulo( new CapituloKey(i, livroId, versaoId) ) );
 		}
 		dao.save( list );
 	}

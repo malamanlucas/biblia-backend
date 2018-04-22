@@ -9,7 +9,7 @@ public interface CapituloApp {
 
 	Capitulo save(Capitulo entity);
 	
-	void save(Integer livroId, Integer capitulos);
+	void save(Integer livroId, Integer capitulos, Integer versaoId);
 
 	List<Capitulo> findAll();
 

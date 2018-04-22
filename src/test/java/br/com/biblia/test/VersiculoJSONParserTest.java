@@ -14,7 +14,7 @@ public class VersiculoJSONParserTest {
 
 	@Test
 	public void testConvertVersiculoKeyToJson() throws Exception {
-		VersiculoKey key = new VersiculoKey(1,2,3);
+		VersiculoKey key = new VersiculoKey(1,2,3,4);
 		
 		String json = key.getJson();
 		
@@ -23,7 +23,7 @@ public class VersiculoJSONParserTest {
 		Assert.assertNotNull(key);
 		Assert.assertNotNull(json);
 		Assert.assertNotNull(value);
-		Assert.assertEquals(new VersiculoKey(value.getVersiculoId(), value.getCapituloId(), value.getLivroId()), key);
+		Assert.assertEquals(new VersiculoKey(value.getVersiculoId(), value.getCapituloId(), value.getLivroId(), value.getVersaoId()), key);
 	}
 	
 	

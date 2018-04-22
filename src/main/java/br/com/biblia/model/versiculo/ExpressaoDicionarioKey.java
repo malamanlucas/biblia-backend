@@ -9,7 +9,7 @@ import javax.persistence.Enumerated;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.IdiomaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class ExpressaoDicionarioKey implements Serializable {
 	private Integer id;
 	
 	@Enumerated(EnumType.STRING)
-	private Idioma idioma;
+	private IdiomaEnum idioma;
 	
 	@Embedded
 	private ExpressaoKey expressaoKey;

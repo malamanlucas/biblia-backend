@@ -3,6 +3,7 @@ package br.com.biblia.test.app;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import br.com.biblia.apps.expressao.ExpressaoApp;
 import br.com.biblia.dao.DicionarioDAO;
 import br.com.biblia.dao.ExpressaoDAO;
 import br.com.biblia.dao.MapaDAO;
-import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.IdiomaEnum;
 import br.com.biblia.model.Dicionario;
 import br.com.biblia.model.DicionarioKey;
 import br.com.biblia.model.Mapa;
@@ -67,6 +68,7 @@ public class ExpressaoAppTest extends ExpressaoBaseTest {
 				.capituloId(expressao.getKey().getCapituloId())
 				.id(expressao.getKey().getVersiculoId())
 				.livroId(expressao.getKey().getLivroId())
+				.versaoId(expressao.getKey().getVersaoId())
 				.build();
 		Expressao expressaoFinded = app.findByKeyAndInicioAndFim(versiculoKey, expressao.getInicio(), expressao.getFim());
 		genericAssert(expressaoFinded);
@@ -92,7 +94,7 @@ public class ExpressaoAppTest extends ExpressaoBaseTest {
 		Dicionario dicionario = Dicionario.builder()
 												.key( DicionarioKey.builder()
 																		  .id(-1234)
-																		  .idioma(Idioma.GREGO)
+																		  .idioma(IdiomaEnum.GREGO)
 																		  .build() )
 												.build();
 		Expressao expressao = addOneExpressaoDicionario( dicionario, mateus1_1.getKey() );

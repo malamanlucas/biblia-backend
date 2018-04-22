@@ -17,7 +17,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor @EqualsAndHashCode @Builder
-@ToString(of={"expressaoId","versiculoId", "livroId", "capituloId"}, includeFieldNames=false)
+@ToString(of={"expressaoId","versiculoId", "livroId", "capituloId", "versaoId"}, includeFieldNames=false)
 public class ExpressaoKey implements Serializable {
 
 	@NotNull
@@ -35,5 +35,9 @@ public class ExpressaoKey implements Serializable {
 	@NotNull
 	@Column(name="livro_id")
 	private Integer livroId;
+	
+	@NotNull
+	@Column(name="versao_id")
+	private Integer versaoId;
 	
 }

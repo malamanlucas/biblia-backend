@@ -43,17 +43,16 @@ public class Livro {
 	@Id
 	private Integer id;
 	private String nome;
-	private Integer ordem;
-	private String sigla;
 	
 	@Enumerated(EnumType.STRING)
 	private Testamento testamento;
 	
+	private Integer ordem;
+	
+	private String sigla;
+	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="livro")
 	private List<Capitulo> capitulos;
-	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="livro")
-	private LivroDetalhe detalhe;
 	
 	@Transient
 	private List<Versiculo> versiculos = Lists.newArrayList();

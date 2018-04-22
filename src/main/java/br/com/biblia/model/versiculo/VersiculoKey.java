@@ -19,7 +19,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor @EqualsAndHashCode @Builder
-@ToString(of={"id","livroId", "capituloId"}, includeFieldNames=false)
+@ToString(of={"id","livroId", "capituloId", "versaoId"}, includeFieldNames=false)
 public class VersiculoKey implements Serializable {
 	
 	private Integer id;
@@ -29,9 +29,12 @@ public class VersiculoKey implements Serializable {
 	
 	@Column(name="livro_id")
 	private Integer livroId;
+	
+	@Column(name="versao_id")
+	private Integer versaoId;
 
 	public String getJson() throws JsonProcessingException {
-		VersiculoKeyAsJson object = new VersiculoKeyAsJson(id, capituloId, livroId);
+		VersiculoKeyAsJson object = new VersiculoKeyAsJson(id, capituloId, livroId, versaoId);
 		return new ObjectMapper().writer().writeValueAsString(object);
 	}
 
@@ -40,6 +43,7 @@ public class VersiculoKey implements Serializable {
 		private Integer id;
 		private Integer capituloId;
 		private Integer livroId;
+		private Integer versaoId;
 	}
 	
 }

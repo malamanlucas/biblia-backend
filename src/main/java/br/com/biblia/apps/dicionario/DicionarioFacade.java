@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import br.com.biblia.dao.DicionarioDAO;
-import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.IdiomaEnum;
 import br.com.biblia.model.Dicionario;
 import br.com.biblia.model.DicionarioKey;
 
@@ -26,7 +26,7 @@ public class DicionarioFacade implements DicionarioApp {
 	}
 
 	@Override
-	public List<Dicionario> search(Idioma idioma) {
+	public List<Dicionario> search(IdiomaEnum idioma) {
 		return dao.search(idioma);
 	}
 
@@ -41,7 +41,7 @@ public class DicionarioFacade implements DicionarioApp {
 	}
 
 	@Override
-	public void createDefaultIfNotExists(Integer codigo, Idioma idioma) {
+	public void createDefaultIfNotExists(Integer codigo, IdiomaEnum idioma) {
 		DicionarioKey key = new DicionarioKey(codigo, idioma);
 		if ( !dao.exists(key) ) {
 			dao.save( new Dicionario( key, "Não há definição para esta palavra", false) );

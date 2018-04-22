@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.biblia.Application;
 import br.com.biblia.dao.VersiculoDAO;
+import br.com.biblia.enums.IdiomaEnum;
 import br.com.biblia.model.versiculo.Expressao;
 import br.com.biblia.model.versiculo.ExpressaoKey;
 import br.com.biblia.model.versiculo.Versiculo;
@@ -28,6 +29,24 @@ public class VersiculoDAOTest extends VersiculoBaseTest {
 
 	@Autowired
 	private VersiculoDAO dao;
+	
+	@Test
+	public void testSaveVersiculo() {
+		VersiculoKey key = VersiculoKey.builder()
+							.capituloId(1)
+							.id(1)
+							.livroId(1)
+							.versaoId(1)
+							.build();
+		Versiculo entity = Versiculo.builder()
+							.idioma(IdiomaEnum.GREGO)
+							.numero(1)
+							.texto("textqwewq")
+							.key(key)
+							.build();
+		dao.save(entity);
+		
+	}
 	
 	@Test
 	public void testFindAllAfterDeleteAll() {
@@ -59,6 +78,7 @@ public class VersiculoDAOTest extends VersiculoBaseTest {
 								.versiculoId(k.getId())
 								.capituloId(k.getCapituloId())
 								.livroId(k.getLivroId())
+								.versaoId(k.getVersaoId())
 								.build() )
 					.inicio(start)
 					.fim(fim)

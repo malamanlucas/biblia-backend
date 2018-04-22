@@ -34,4 +34,5 @@ public interface VersiculoDAO extends JpaRepository<Versiculo, VersiculoKey> {
 	        + "AND capitulo_id = :#{#key.capituloId} AND livro_id = :#{#key.livroId}")
 	void deleteByKey(@Param("key") VersiculoKey key);
 	
+	
 }

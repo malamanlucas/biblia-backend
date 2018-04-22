@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Lists;
 
 import br.com.biblia.dao.DicionarioDAO;
-import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.IdiomaEnum;
 import br.com.biblia.model.Dicionario;
 import br.com.biblia.model.DicionarioKey;
 
@@ -24,7 +24,7 @@ public class DicionarioRestController {
     private DicionarioDAO dao;
     
     @PostMapping("/")
-    public List<Dicionario> findAll(@RequestBody List<Integer> dics, @RequestParam Idioma idioma) {
+    public List<Dicionario> findAll(@RequestBody List<Integer> dics, @RequestParam IdiomaEnum idioma) {
     	List<DicionarioKey> keys = Lists.newArrayList();
     	dics.forEach( id -> keys.add( new DicionarioKey(id, idioma) ) );	
         return dao.findByKeyIn(keys);

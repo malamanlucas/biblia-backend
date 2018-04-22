@@ -87,7 +87,7 @@ public abstract class VersiculoBaseTest {
 	protected Versiculo getMateus1_1() {
 		Livro mateus = livroDAO.findByNome(LivroEnum.MATEUS.getNomeNoBD());
         
-		Versiculo mateus1_1 = versiculoDAO.search(new CapituloKey(1, mateus.getId())).get(0);
+		Versiculo mateus1_1 = versiculoDAO.search(new CapituloKey(1, mateus.getId(), 1)).get(0);
         mateus1_1 = versiculoDAO.getOne(mateus1_1.getKey());
         entityManager.detach(mateus1_1);
         Assert.assertNotNull(mateus1_1);
@@ -98,7 +98,7 @@ public abstract class VersiculoBaseTest {
 	protected Versiculo getMateus1_2() {
 		Livro mateus = livroDAO.findByNome(LivroEnum.MATEUS.getNomeNoBD());
         
-        Versiculo mateus1_2 = versiculoDAO.search(new CapituloKey(1, mateus.getId())).get(1);
+        Versiculo mateus1_2 = versiculoDAO.search(new CapituloKey(1, mateus.getId(), 1)).get(1);
         mateus1_2 = versiculoDAO.getOne(mateus1_2.getKey());
         entityManager.detach(mateus1_2);
         Assert.assertNotNull(mateus1_2);
@@ -109,7 +109,7 @@ public abstract class VersiculoBaseTest {
 	protected Versiculo getMateus1_16() {
 		Livro mateus = livroDAO.findByNome(LivroEnum.MATEUS.getNomeNoBD());
         
-        Versiculo mateus1_16 = versiculoDAO.search(new CapituloKey(15, mateus.getId())).get(1);
+        Versiculo mateus1_16 = versiculoDAO.search(new CapituloKey(15, mateus.getId(), 1)).get(1);
         mateus1_16 = versiculoDAO.getOne(mateus1_16.getKey());
         entityManager.detach(mateus1_16);
         Assert.assertNotNull(mateus1_16);
@@ -120,7 +120,7 @@ public abstract class VersiculoBaseTest {
 	protected Versiculo getMateus5_6() {
 		Livro mateus = livroDAO.findByNome(LivroEnum.MATEUS.getNomeNoBD());
         
-        Versiculo mateus5_6 = versiculoDAO.search(new CapituloKey(5, mateus.getId())).get(5);
+        Versiculo mateus5_6 = versiculoDAO.search(new CapituloKey(5, mateus.getId(), 1)).get(5);
         mateus5_6 = versiculoDAO.getOne(mateus5_6.getKey());
         entityManager.detach(mateus5_6);
         Assert.assertNotNull(mateus5_6);

@@ -28,7 +28,7 @@ public class ExpressaoFacade implements ExpressaoApp {
 	public Expressao save(Expressao expressao) {
 		
 		if ( CollectionUtils.isEmpty(expressao.getDicionarios()) && CollectionUtils.isEmpty(expressao.getMapas()) ) {
-			VersiculoKey versiculoKey = new VersiculoKey(expressao.getKey().getVersiculoId(), expressao.getKey().getCapituloId(), expressao.getKey().getLivroId());
+			VersiculoKey versiculoKey = new VersiculoKey(expressao.getKey().getVersiculoId(), expressao.getKey().getCapituloId(), expressao.getKey().getLivroId(), expressao.getKey().getVersaoId());
 			dao.deleteByKeyAndInicioAndFim(versiculoKey, expressao.getInicio(), expressao.getFim());
 			return expressao;
 		} else { 

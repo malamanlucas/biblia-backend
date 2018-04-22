@@ -35,7 +35,8 @@ public class ExpressaoMapa implements Serializable {
 		@JoinColumn(name="expressao_id", referencedColumnName="expressao_id", insertable=false, updatable=false),
 		@JoinColumn(name="versiculo_id", referencedColumnName="versiculo_id", insertable=false, updatable=false),
 		@JoinColumn(name="capitulo_id", referencedColumnName="capitulo_id", insertable=false, updatable=false),
-		@JoinColumn(name="livro_id", referencedColumnName="livro_id", insertable=false, updatable=false)
+		@JoinColumn(name="livro_id", referencedColumnName="livro_id", insertable=false, updatable=false),
+		@JoinColumn(name="versao_id", referencedColumnName="versao_id", insertable=false, updatable=false)
 	})
 	private Expressao expressao;
 	

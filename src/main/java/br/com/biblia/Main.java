@@ -1,21 +1,26 @@
 package br.com.biblia;
 
-import java.util.Arrays;
-
-import br.com.biblia.enums.LivroEnum;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class Main {
 
-	public static void main(String[] args) {
-//		String termo = "Co 10.1";
-//		System.out.println(needSearchByCordenada(termo));
-//		Arrays.asList(LivroEnum.values()).forEach(t -> System.out.println(t.getSiglaEmPortugues()));
-		System.out.println("abc".substring(0, "abc".length()));
-	}
-	
-	static boolean needSearchByCordenada(String termo) {
-		return Character.isDigit(termo.charAt(0)) || 
-				LivroEnum.fromSiglaPortugues(termo.substring(0, termo.indexOf(' '))) != null;
+	public static void main(String[] args) throws Exception {
+//		String s = "/home/lucasm/Documents/livros_detalhes_old.txt";
+//		FileOutputStream fileOutputStream = new FileOutputStream(new File(s));
+//		System.out.println(fileOutputStream);
+		
+		System.out.println(String.format("qwewqeqw%d", 1));
+		
+//		List<String> readAllLines = Files.readAllLines(Paths.get(new File(s).toURI()));
+//		readAllLines.stream().forEach(c -> {
+//			if (c.indexOf('"') != -1) {
+//				System.out.println(c.substring(0, c.indexOf('"')-2)+");");
+//			}
+//		});
+//		
 	}
 	
 }

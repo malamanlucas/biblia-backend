@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.biblia.Application;
 import br.com.biblia.apps.versiculo.VersiculoApp;
 import br.com.biblia.dao.VersiculoDAO;
-import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.IdiomaEnum;
 import br.com.biblia.model.sentenca.Sentenca;
 import br.com.biblia.model.versiculo.Expressao;
 import br.com.biblia.model.versiculo.ExpressaoDicionario;
@@ -61,7 +61,7 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		Integer qtd = app.qtdOcorrenciasTermo("trombeta");
 		
 		Assert.assertNotNull(qtd);
-		Assert.assertEquals(new Integer(74), qtd);
+		Assert.assertEquals(new Integer(81), qtd);
 	}
 	
 	@Test
@@ -80,8 +80,8 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		
 		List<Expressao> expressoes = Lists.newArrayList();
 
-		expressoes.add( instanceExpressao(1, k, 9, 16, "geração", 1, 2) ); 
-		expressoes.add( instanceExpressao(2, k, 17, 25, "de Jesus", 2) ); 
+		expressoes.add( instanceExpressao(1, k, 11, 18, "geração", 1, 2) ); 
+		expressoes.add( instanceExpressao(2, k, 19, 27, "de Jesus", 2) ); 
 		mateus1_1.setExpressoes(expressoes);
 		
 		dao.saveAndFlush(mateus1_1);
@@ -90,8 +90,8 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		
 		System.out.println( mateus1_1.getVersiculoMontado() );
 		
-		String oldExpected = "Livro da geração de Jesus Cristo, Filho de Davi, Filho de Abraão.";
-		String newExpected = "Livro da <span class=\"texto\" dic=\"1,2\">geração</span> <span class=\"texto\" dic=\"2\">de Jesus</span> Cristo, Filho de Davi, Filho de Abraão.";
+		String oldExpected = "¶ Livro da geração de Jesus Cristo, filho de Davi, filho de Abraão.";
+		String newExpected = "¶ Livro da <span class=\"texto\" dic=\"1,2\">geração</span> <span class=\"texto\" dic=\"2\">de Jesus</span> Cristo, filho de Davi, filho de Abraão.";
 		
 		Assert.assertEquals(newExpected, mateus1_1.getVersiculoMontado());
 		
@@ -113,9 +113,9 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		mateus1_2 = dao.findOne(k);
 		
 		System.out.println( mateus1_2.getVersiculoMontado() );
-		
-		String oldExpected = "Abraão gerou a Isaque, e Isaque gerou a Jacó, e Jacó gerou a Judá e a seus irmãos,";
-		String newExpected = "Abraão <span class=\"texto\" dic=\"1\">gerou</span> a Isaque, e Isaque gerou a Jacó, e Jacó gerou a Judá e a seus irmãos,";
+			
+		String oldExpected = "Abraão gerou a Isaque; e Isaque gerou a Jacó; e Jacó gerou a Judá e a seus irmãos;";
+		String newExpected = "Abraão <span class=\"texto\" dic=\"1\">gerou</span> a Isaque; e Isaque gerou a Jacó; e Jacó gerou a Judá e a seus irmãos;";
 		
 		Assert.assertEquals(newExpected, mateus1_2.getVersiculoMontado());
 		
@@ -139,8 +139,8 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		
 		System.out.println( mateus5_6.getVersiculoMontado() );
 		
-		String oldExpected = "bem-aventurados os que têm fome e sede de justiça, porque eles serão fartos;";
-		String newExpected = "bem-aventurados <span class=\"texto\" dic=\"3983\">os que têm fome</span> e sede de <span class=\"texto\" dic=\"1343\">justiça</span>, porque eles serão fartos;";
+		String oldExpected = "Bem-aventurados os que têm fome e sede de justiça, porque eles serão fartos;";
+		String newExpected = "Bem-aventurados <span class=\"texto\" dic=\"3983\">os que têm fome</span> e sede de <span class=\"texto\" dic=\"1343\">justiça</span>, porque eles serão fartos;";
 		
 		Assert.assertEquals(newExpected, mateus5_6.getVersiculoMontado());
 		
@@ -155,6 +155,7 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 								.versiculoId(k.getId())
 								.capituloId(k.getCapituloId())
 								.livroId(k.getLivroId())
+								.versaoId(1)
 								.build() )
 					.inicio(start)
 					.fim(fim)
@@ -164,7 +165,7 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		expressao.setDicionarios( Lists.newArrayList() );
 		for (Integer dic : dics) {
 			expressao.getDicionarios().add( ExpressaoDicionario.builder()
-																	  .key( new ExpressaoDicionarioKey(dic, Idioma.GREGO, expressao.getKey()))
+																	  .key( new ExpressaoDicionarioKey(dic, IdiomaEnum.GREGO, expressao.getKey()))
 																	  .build() );
 		}
 		return expressao;

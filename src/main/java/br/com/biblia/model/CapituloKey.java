@@ -20,4 +20,7 @@ public class CapituloKey implements Serializable {
 	@Column(name="livro_id")
 	private Integer livroId;
 	
+	@Column(name="versao_id")
+	private Integer versaoId;
+	
 }

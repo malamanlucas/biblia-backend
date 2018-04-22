@@ -1,6 +1,6 @@
 package br.com.biblia.enums;
 
-import static br.com.biblia.enums.Idioma.*;
+import static br.com.biblia.enums.IdiomaEnum.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import lombok.Getter;
 public enum LivroEnum {
 	
 	GENESIS ("Gênesis", "Genesis", 50, "Gen", "Gn", HEBRAICO),
-	EXODO ("Êxodo", "Exodo", 40, "Ex", "Ex", HEBRAICO),
+	EXODO ("Êxodo", "Exodo", 40, "Exod", "Ex", HEBRAICO),
 	LEVITICO ("Levítico", "Levitico", 27, "Lev", "Lv", HEBRAICO),
 	NUMEROS ("Números", "Numeros", 36, "Num", "Nm", HEBRAICO),
 	DEUTERONOMIO ("Deuteronomio", "Deuteronomio", 34, "Deut", "Dt", HEBRAICO),
@@ -25,7 +25,7 @@ public enum LivroEnum {
 	SEGUNDO_CRONICAS ("2 Crônicas", "2 Cronicas", 36, "2Chr", "2 Cr", HEBRAICO),
 	ESDRAS ("Esdras", "Esdras", 10, "Ezra", "Ed", HEBRAICO),
 	NEEMIAS ("Neemias", "Neemias", 13, "Neh", "Ne", HEBRAICO),
-	ESTER ("Ester", "Ester", 10, "Est", "Et", HEBRAICO),
+	ESTER ("Ester", "Ester", 10, "Esth", "Et", HEBRAICO),
 	JO ("Jó", "Jo", 42, "Job", "Jó", HEBRAICO),
 	SALMOS ("Salmos", "Salmos", 150, "Ps", "Sl", HEBRAICO),
 	PROVÉRBIOS ("Provérbios", "Proverbios", 31, "Prov", "Pv", HEBRAICO),
@@ -135,9 +135,9 @@ public enum LivroEnum {
 	private String siglaEmPortugues;
 
 	@Getter
-	private Idioma idioma;
+	private IdiomaEnum idioma;
 
-	private LivroEnum(String nomeNoBD, String nomeSemAcentuacao, Integer qtdCapitulo, String siglaEmIngles, String siglaEmPortugues, Idioma idioma) {
+	private LivroEnum(String nomeNoBD, String nomeSemAcentuacao, Integer qtdCapitulo, String siglaEmIngles, String siglaEmPortugues, IdiomaEnum idioma) {
 		this.nomeNoBD = nomeNoBD;
 		this.nomeSemAcentuacao = nomeSemAcentuacao;
 		this.qtdCapitulo = qtdCapitulo;
@@ -158,7 +158,7 @@ public enum LivroEnum {
 	}
 
 	public boolean isNovoTestamento() {
-		return this.idioma == Idioma.GREGO;
+		return this.idioma == IdiomaEnum.GREGO;
 	}
 
 	

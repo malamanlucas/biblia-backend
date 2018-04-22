@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.com.biblia.dao.DicionarioDAO;
 import br.com.biblia.dao.ExpressaoDAO;
 import br.com.biblia.dao.MapaDAO;
-import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.IdiomaEnum;
 import br.com.biblia.model.Dicionario;
 import br.com.biblia.model.DicionarioKey;
 import br.com.biblia.model.Mapa;
@@ -48,6 +48,7 @@ public abstract class ExpressaoBaseTest extends VersiculoBaseTest {
     												 				  .capituloId(versiculoKey.getCapituloId())
     												 				  .livroId(versiculoKey.getLivroId())
     												 				  .versiculoId(versiculoKey.getId())
+    												 				  .versaoId(versiculoKey.getVersaoId())
     												 				  .expressaoId(1)
     												 				  .build() )		
     										 .build();
@@ -85,7 +86,7 @@ public abstract class ExpressaoBaseTest extends VersiculoBaseTest {
 	}
 	
 	protected Expressao addOneExpressaoDicionario(Dicionario dicionario, VersiculoKey versiculoKey) {
-        ExpressaoKey expressaoKey = new ExpressaoKey(5, versiculoKey.getId(), versiculoKey.getCapituloId(), versiculoKey.getLivroId());
+        ExpressaoKey expressaoKey = new ExpressaoKey(5, versiculoKey.getId(), versiculoKey.getCapituloId(), versiculoKey.getLivroId(), versiculoKey.getVersaoId());
         Expressao expressao = instanceExpressao(5, versiculoKey, 1, 1, "texto", "descricao");
         ExpressaoDicionario expressaoDicionario = ExpressaoDicionario
     															.builder()
@@ -110,7 +111,7 @@ public abstract class ExpressaoBaseTest extends VersiculoBaseTest {
 		DicionarioKey dicionarioKey = DicionarioKey
 	    										.builder()
 	    										.id(-1)
-	    										.idioma(Idioma.HEBRAICO)
+	    										.idioma(IdiomaEnum.HEBRAICO)
 	    										.build();
 		Dicionario dicionario = Dicionario
 	    								.builder()
@@ -132,6 +133,7 @@ public abstract class ExpressaoBaseTest extends VersiculoBaseTest {
 								.versiculoId(k.getId())
 								.capituloId(k.getCapituloId())
 								.livroId(k.getLivroId())
+								.versaoId(k.getVersaoId())
 								.build() )
 					.inicio(start)
 					.fim(fim)

@@ -105,13 +105,13 @@ public class ImportarBibliaFacade implements ImportarBiblia {
 		Document doc = null;
 		try {
 			String url = null;
-			if ( livro.isStartingWithNumber()) {
-				url = String.format("https://www.biblegateway.com/passage/?search=%s+%s&version=ARC&interface=print", livro.getNomeSemAcentuacao().replace(" ", "%20"), capituloId);
-			} else if ( livro == LivroEnum.LAMENTACOES || livro == LivroEnum.LEVITICO ) {
-				url = String.format("https://www.biblegateway.com/passage/?search=%s+%s&version=ARC&interface=print", livro.getNomeNoBD(), capituloId);
-			} else {
-				url = String.format("https://www.biblegateway.com/passage/?search=%s+%s&version=ARC&interface=print", livro.getNomeSemAcentuacao(), capituloId);
-			}
+//			if ( livro.isStartingWithNumber()) {
+//				url = String.format("https://www.biblegateway.com/passage/?search=%s+%s&version=ARC&interface=print", livro.getNomeSemAcentuacao().replace(" ", "%20"), capituloId);
+////			} else if ( livro == LivroEnum.LAMENTACOES || livro == LivroEnum.LEVITICO ) {
+//				url = String.format("https://www.biblegateway.com/passage/?search=%s+%s&version=ARC&interface=print", livro.getNomeNoBD(), capituloId);
+//			} else {
+//				url = String.format("https://www.biblegateway.com/passage/?search=%s+%s&version=ARC&interface=print", livro.getNomeSemAcentuacao(), capituloId);
+//			}
 			doc = Jsoup.parse(URI.create(url).toURL(), 9000);
 		} catch (IOException e1) {
 			e1.printStackTrace();

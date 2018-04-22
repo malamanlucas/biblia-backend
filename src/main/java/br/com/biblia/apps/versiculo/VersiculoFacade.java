@@ -11,7 +11,7 @@ import com.google.common.base.Preconditions;
 
 import br.com.biblia.apps.dicionario.DicionarioApp;
 import br.com.biblia.dao.VersiculoDAO;
-import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.IdiomaEnum;
 import br.com.biblia.model.CapituloKey;
 import br.com.biblia.model.versiculo.Expressao;
 import br.com.biblia.model.versiculo.Versiculo;
@@ -41,7 +41,7 @@ public class VersiculoFacade implements VersiculoApp {
 		return texto.replaceAll("[\\[|\\]|0-9|=|*]", "");
 	}
 
-	public String formata(String text, Idioma idioma) {
+	public String formata(String text, IdiomaEnum idioma) {
 		StringBuilder a = new StringBuilder( text );
 		
 		StringBuilder nova = new StringBuilder(); 

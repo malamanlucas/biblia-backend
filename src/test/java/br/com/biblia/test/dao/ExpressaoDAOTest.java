@@ -46,7 +46,7 @@ public class ExpressaoDAOTest extends ExpressaoBaseTest {
     	Expressao expressaoExpected = garantirExpressao();
     	ExpressaoKey expressaoKey = expressaoExpected.getKey();
     	
-    	VersiculoKey key = new VersiculoKey(expressaoKey.getVersiculoId(), expressaoKey.getCapituloId(), expressaoKey.getLivroId());
+    	VersiculoKey key = new VersiculoKey(expressaoKey.getVersiculoId(), expressaoKey.getCapituloId(), expressaoKey.getLivroId(), expressaoKey.getVersaoId());
     	
     	dao.deleteByKeyAndInicioAndFim(key, expressaoExpected.getInicio(), expressaoExpected.getFim());
     	
@@ -59,7 +59,7 @@ public class ExpressaoDAOTest extends ExpressaoBaseTest {
     public void testFindByKeyAndByRange() {
     	Expressao expressaoExpected = garantirExpressao();
     	ExpressaoKey expressaoKey = expressaoExpected.getKey();
-    	VersiculoKey key = new VersiculoKey(expressaoKey.getVersiculoId(), expressaoKey.getCapituloId(), expressaoKey.getLivroId());
+    	VersiculoKey key = new VersiculoKey(expressaoKey.getVersiculoId(), expressaoKey.getCapituloId(), expressaoKey.getLivroId(), expressaoKey.getVersaoId());
     	Expressao expressaoFinded = dao.findByKeyAndInicioAndFim(key, expressaoExpected.getInicio(), expressaoExpected.getFim());
     	Assert.assertNotNull( expressaoFinded );
     	Assert.assertEquals( expressaoExpected, expressaoFinded );
@@ -69,7 +69,7 @@ public class ExpressaoDAOTest extends ExpressaoBaseTest {
     public void testFindByKeyAndByRangeWhenFilterNotApplyToAnyExpressao() {
     	Expressao expressaoExpected = garantirExpressao();
     	ExpressaoKey expressaoKey = expressaoExpected.getKey();
-    	VersiculoKey key = new VersiculoKey(expressaoKey.getVersiculoId(), expressaoKey.getCapituloId(), expressaoKey.getLivroId());
+    	VersiculoKey key = new VersiculoKey(expressaoKey.getVersiculoId(), expressaoKey.getCapituloId(), expressaoKey.getLivroId(), expressaoKey.getVersaoId());
     	Expressao expressaoFinded = dao.findByKeyAndInicioAndFim(key, -1231, -3495);
     	Assert.assertNull( expressaoFinded );
     }
@@ -98,14 +98,14 @@ public class ExpressaoDAOTest extends ExpressaoBaseTest {
     @Test
 	public void testRetrieveNextVersoWhenDoeNotHaveAnyRowsAndExpressaoIdIsNull() {
 	    dao.deleteAllInBatch();
-	    ExpressaoKey key = new ExpressaoKey(null, 1, 1, 1);
+	    ExpressaoKey key = new ExpressaoKey(null, 1, 1, 1, 1);
 		Assert.assertEquals(new Integer(1), dao.retrieveNextExpressaoId(key));
 	}
     
 	@Test
 	public void testRetrieveNextVersoWhenDoeNotHaveAnyRows() {
 	    dao.deleteAllInBatch();
-	    Assert.assertEquals(new Integer(1), dao.retrieveNextExpressaoId(new ExpressaoKey(1, 1, 1, 1)));
+	    Assert.assertEquals(new Integer(1), dao.retrieveNextExpressaoId(new ExpressaoKey(1, 1, 1, 1, 1)));
 	}
 	
 	@Test

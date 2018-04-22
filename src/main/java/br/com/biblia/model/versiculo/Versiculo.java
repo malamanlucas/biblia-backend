@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import br.com.biblia.enums.Idioma;
+import br.com.biblia.enums.IdiomaEnum;
 import br.com.biblia.model.Capitulo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,22 +37,25 @@ public class Versiculo {
 	private VersiculoKey key = new VersiculoKey();
 	
 	private String texto;
+	private String formatado;
+	private String limpo;
 	private Integer numero;
 	
 	@Column(name="qtd_aumento")
 	private Integer qtdAumentado;
 	
 	@Enumerated(EnumType.STRING)
-	private Idioma idioma = Idioma.HEBRAICO;
+	private IdiomaEnum idioma = IdiomaEnum.HEBRAICO;
 	
 	@ManyToOne
 	@JoinColumns({
 		@JoinColumn(name="capitulo_id", referencedColumnName="id", insertable=false, updatable=false),
 		@JoinColumn(name="livro_id", referencedColumnName="livro_id", insertable=false, updatable=false),
+		@JoinColumn(name="versao_id", referencedColumnName="versao_id", insertable=false, updatable=false)
 	})
 	private Capitulo capitulo;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="versiculo")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY, mappedBy="versiculo")
 	@OrderBy("fim")
 	private List<Expressao> expressoes;
 	

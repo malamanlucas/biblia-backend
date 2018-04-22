@@ -9,16 +9,16 @@ import lombok.Getter;
 public enum Testamento {
 
 	AMBOS("Ambos", null),
-	NOVO("Novo Testamento", Idioma.GREGO),
-	VELHO("Velho Testamento", Idioma.HEBRAICO);
+	NOVO("Novo Testamento", IdiomaEnum.GREGO),
+	VELHO("Velho Testamento", IdiomaEnum.HEBRAICO);
 	
 	@Getter
 	private String descricao;
 	
 	@Getter
-	private Idioma idioma;
+	private IdiomaEnum idioma;
 
-	private Testamento(String descricao, Idioma idioma) {
+	private Testamento(String descricao, IdiomaEnum idioma) {
 		this.descricao = descricao;
 		this.idioma = idioma;
 	}
