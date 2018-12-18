@@ -16,6 +16,7 @@ import java.util.concurrent.TimeoutException;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -167,7 +168,6 @@ public class ImportarBibliaFacade implements ImportarBiblia {
 								ps.setString(6, e.getText());
 								ps.setInt(7, e.getNumeroVersiculo());
 								ps.setString(8, e.getText());
-								
 							}
 						});
 					} catch (Exception e1){}
