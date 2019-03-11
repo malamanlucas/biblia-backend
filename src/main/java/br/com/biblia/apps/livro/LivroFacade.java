@@ -34,12 +34,12 @@ public class LivroFacade implements LivroApp {
 
 	@Override
 	public Livro findOne(Integer id) {
-		return dao.findOne(id);
+		return dao.findById(id).get();
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		dao.delete(id);
+		dao.deleteById(id);
 	}
 
 	@Override

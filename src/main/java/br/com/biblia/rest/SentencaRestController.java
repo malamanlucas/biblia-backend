@@ -2,11 +2,13 @@ package br.com.biblia.rest;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
@@ -24,16 +26,17 @@ public class SentencaRestController {
     
     @GetMapping(value="/")
     public List<Sentenca> findAll(String termo) {
-        return app.searchSentencasByTermo(termo);
+        return app.searchSentencasByTermo(termo, true);
     }
     
     @GetMapping(value="/format")
-    public Map<String, Object> format(String termo) {
+    public Map<String, Object> format(String termo, @RequestParam(defaultValue="true") Boolean ignoreCase) {
+    	System.err.println(termo + ", " + ignoreCase);
     	List<Sentenca> result = null;
 		if (needSearchByCordenada(termo)) {
 			result = app.searchSentencasByCordenada(termo);
 		} else {
-			result = app.searchSentencasByTermo(termo);
+			result = app.searchSentencasByTermo(termo, ignoreCase);
 		}
 		List<String> textos = result.stream().map(e -> e.getTextoMontado()).collect(Collectors.toList());
 		
@@ -47,12 +50,13 @@ public class SentencaRestController {
     }
 
 	private boolean needSearchByCordenada(String termo) {
-		int lastIndex = termo.indexOf(' ');
-		if (lastIndex == -1) {
-			lastIndex = termo.length();
+		if (Character.isDigit(termo.charAt(0))) {
+			return true;
 		}
-		return Character.isDigit(termo.charAt(0)) ||
-		 LivroEnum.fromSiglaPortugues(termo.substring(0, lastIndex)) != null;
+		String[] parts = termo.split(" ");
+		return parts.length > 1 && Objects.nonNull(LivroEnum.fromSiglaPortugues(parts[0])) 
+				&& Character.isDigit(parts[1].charAt(0));
+		
 	}
 	
 }

@@ -21,8 +21,11 @@ public class SentencaFacade implements SentencaApp {
 	private SentencaDAO sentencaDAO;
 	
 	@Override
-	public List<Sentenca> searchSentencasByTermo(String termo) {
-		return sentencaDAO.searchByTermo(termo);
+	public List<Sentenca> searchSentencasByTermo(String termo, Boolean ignoreCase) {
+		if (ignoreCase) {
+			return sentencaDAO.findBytextoContainingIgnoreCase(termo);
+		}
+		return sentencaDAO.findBytextoContaining(termo);
 	}
 	
 	@Override

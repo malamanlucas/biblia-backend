@@ -25,7 +25,7 @@ public class VersiculoRestController {
     @GetMapping(value="/")
     public List<Versiculo> findAll(@RequestParam("livroId") Integer livroId,
     							   @RequestParam("capituloId") Integer capituloId,
-    							   @RequestParam("versaoId") Integer versaoId) {
+    							   @RequestParam(defaultValue="1") Integer versaoId) {
         return app.search( new CapituloKey(capituloId, livroId, versaoId) );
     }
     

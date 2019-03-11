@@ -32,18 +32,18 @@ public class DicionarioFacade implements DicionarioApp {
 
 	@Override
 	public Dicionario findOne(DicionarioKey key) {
-		return dao.findOne( key );
+		return dao.findById( key ).get();
 	}
 
 	@Override
 	public void deleteById(DicionarioKey key) {
-		dao.delete( key );
+		dao.deleteById( key );
 	}
 
 	@Override
 	public void createDefaultIfNotExists(Integer codigo, IdiomaEnum idioma) {
 		DicionarioKey key = new DicionarioKey(codigo, idioma);
-		if ( !dao.exists(key) ) {
+		if ( !dao.existsById(key) ) {
 			dao.save( new Dicionario( key, "Não há definição para esta palavra", false) );
 		}
 	}

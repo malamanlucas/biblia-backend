@@ -9,6 +9,7 @@ import br.com.biblia.dao.DicionarioDAO;
 import br.com.biblia.dao.ExpressaoDAO;
 import br.com.biblia.dao.MapaDAO;
 import br.com.biblia.enums.IdiomaEnum;
+import br.com.biblia.enums.Testamento;
 import br.com.biblia.model.Dicionario;
 import br.com.biblia.model.DicionarioKey;
 import br.com.biblia.model.Mapa;
@@ -54,11 +55,13 @@ public abstract class ExpressaoBaseTest extends VersiculoBaseTest {
     										 .build();
     	modifier.modify(expressao);
     	expressaoDAO.save(expressao);
-    	return expressaoDAO.findOne(expressao.getKey());
+    	return expressaoDAO.findById(expressao.getKey()).get();
 	}
     
 	protected void addOneExpressaoMapa(Mapa mapa, Expressao expressao) {
-		
+		mapa.setNome("qualquer");
+		mapa.setTestamento(Testamento.NOVO);
+		mapaDAO.save(mapa);
 		ExpressaoMapa expressaoMapa = ExpressaoMapa
 												 .builder()
 												 .key( ExpressaoMapaKey

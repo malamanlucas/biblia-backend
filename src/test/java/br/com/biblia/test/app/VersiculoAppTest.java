@@ -1,6 +1,7 @@
 package br.com.biblia.test.app;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
@@ -45,7 +46,7 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		Assert.assertNotNull(versiculoFinded);
 	}
 	
-	@Test(expected=NullPointerException.class)
+	@Test(expected=NoSuchElementException.class)
 	public void shouldDoErrorFindOneInexistent() {
 		VersiculoKey key = VersiculoKey
 							.builder()
@@ -64,12 +65,12 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		Assert.assertEquals(new Integer(81), qtd);
 	}
 	
-	@Test
+	@Test(expected=NoSuchElementException.class)
 	public void testDeleteByKey() {
 	    
 		Versiculo mateus1_1 = getMateus1_1();
 		app.deleteByKey( mateus1_1.getKey() );
-	    Assert.assertNull( dao.findOne(mateus1_1.getKey()) );
+	    Assert.assertNull( dao.findById(mateus1_1.getKey()).get() );
 	}
 	
 	@Test
@@ -86,7 +87,7 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		
 		dao.saveAndFlush(mateus1_1);
 		
-		mateus1_1 = dao.findOne(k);
+		mateus1_1 = dao.findById(k).get();
 		
 		System.out.println( mateus1_1.getVersiculoMontado() );
 		
@@ -110,7 +111,7 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		
 		dao.saveAndFlush(mateus1_2);
 		
-		mateus1_2 = dao.findOne(k);
+		mateus1_2 = dao.findById(k).get();
 		
 		System.out.println( mateus1_2.getVersiculoMontado() );
 			
@@ -135,7 +136,7 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 		
 		dao.saveAndFlush(mateus5_6);
 		
-		mateus5_6 = dao.findOne(k);
+		mateus5_6 = dao.findById(k).get();
 		
 		System.out.println( mateus5_6.getVersiculoMontado() );
 		

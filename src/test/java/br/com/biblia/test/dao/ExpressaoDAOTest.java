@@ -37,7 +37,7 @@ public class ExpressaoDAOTest extends ExpressaoBaseTest {
 		Expressao expressaoExpected = garantirExpressao();
 		ExpressaoKey expressaoKey = expressaoExpected.getKey();
     	dao.delete(expressaoExpected);
-    	Assert.assertNull(dao.findOne(expressaoKey));
+    	Assert.assertFalse(dao.findById(expressaoKey).isPresent());
     }
     
     @Test

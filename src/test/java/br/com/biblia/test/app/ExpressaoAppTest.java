@@ -57,7 +57,7 @@ public class ExpressaoAppTest extends ExpressaoBaseTest {
 	public void testDeleteWhenExpressaoExists() {
 		ExpressaoKey key = garantirExpressao().getKey();
 		app.delete(key);
-		Assert.assertNull(dao.findOne(key));
+		Assert.assertFalse(dao.findById(key).isPresent());
 	}
 	
 	@Test
@@ -111,8 +111,8 @@ public class ExpressaoAppTest extends ExpressaoBaseTest {
 		
 		Expressao expressaoInBD = dao.getOne( expressao.getKey() );
 		
-		Assert.assertNotNull( dicionarioDAO.findOne(dicionario.getKey()) );
-		Assert.assertNotNull( mapaDAO.findOne(mapa.getId()) );
+		Assert.assertNotNull( dicionarioDAO.findById(dicionario.getKey()).get() );
+		Assert.assertNotNull( mapaDAO.findById(mapa.getId()).orElse(null) );
 		
 		genericAssert(expressaoInBD);
 		

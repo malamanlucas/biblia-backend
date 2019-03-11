@@ -19,7 +19,7 @@ public class MapaFacade implements MapaApp {
 	@Override
 	public void createDefaultIfNotExists(Integer codigo) {
 		
-		if ( dao.findOne(codigo) == null ) {
+		if ( dao.findById(codigo).isPresent() ) {
 			dao.save( Mapa.builder()
 								.id(codigo)
 								.nome("Não definido")

@@ -71,7 +71,7 @@ public class VersiculoFacade implements VersiculoApp {
 	}
 
 	public void deleteByKey(VersiculoKey key) {
-		dao.delete(key);
+		dao.deleteById(key);
 	}
 
 	@Override
@@ -95,9 +95,7 @@ public class VersiculoFacade implements VersiculoApp {
 		Preconditions.checkNotNull(key.getId());
 		Preconditions.checkNotNull(key.getCapituloId());
 		Preconditions.checkNotNull(key.getLivroId());
-		Versiculo result = dao.findOne(key);
-		Preconditions.checkNotNull(result);
-		return result;
+		return dao.findById(key).get();
 	}
 	
 }

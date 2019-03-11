@@ -32,7 +32,7 @@ public class CapituloFacade implements CapituloApp {
 
 	@Override
 	public Capitulo findOne(CapituloKey key) {
-		return dao.findOne(key);
+		return dao.findById(key).get();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class CapituloFacade implements CapituloApp {
 		for (int i = 1; i <= capitulos; i++) {
 			list.add( new Capitulo( new CapituloKey(i, livroId, versaoId) ) );
 		}
-		dao.save( list );
+		dao.saveAll( list );
 	}
 
 	@Override

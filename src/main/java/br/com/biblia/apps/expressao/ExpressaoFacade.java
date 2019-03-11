@@ -63,7 +63,7 @@ public class ExpressaoFacade implements ExpressaoApp {
 	@Override
 	public void delete(ExpressaoKey expressaoKey) {
 		Preconditions.checkNotNull(expressaoKey);
-		dao.delete(expressaoKey);
+		dao.deleteById(expressaoKey);
 	}
 
 	

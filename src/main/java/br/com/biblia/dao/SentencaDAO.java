@@ -29,6 +29,10 @@ public interface SentencaDAO extends JpaRepository<Sentenca, Integer> {
 			+ "s.versiculo BETWEEN :#{#cordenada.versiculos.start} AND :#{#cordenada.versiculos.end}) "
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
 	List<Sentenca> searchByCordenada(@Param("cordenada") Cordenada cordenada);
+
+	List<Sentenca> findBytextoContaining(String termo);
+
+	List<Sentenca> findBytextoContainingIgnoreCase(String termo);
 	
 	
 	

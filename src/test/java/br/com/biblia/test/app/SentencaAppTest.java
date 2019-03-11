@@ -33,14 +33,14 @@ public class SentencaAppTest extends VersiculoBaseTest {
 	
 	@Test
 	public void testSearchSentencasByTermo() {
-		List<Sentenca> lstSentenca = app.searchSentencasByTermo("trombeta");
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("trombeta", true);
 		Assert.assertNotNull(lstSentenca);
 		Assert.assertEquals(81, lstSentenca.size());
 	}
 	
 	@Test
 	public void testSearchSentencasByTermoWhenIsUppercase() {
-		List<Sentenca> lstSentenca = app.searchSentencasByTermo("TrOmBetA");
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("TrOmBetA", true);
 		Assert.assertNotNull(lstSentenca);
 		Assert.assertEquals(81, lstSentenca.size());
 	}
