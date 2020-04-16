@@ -2,11 +2,9 @@ package br.com.biblia.test.app;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.biblia.Application;
 import br.com.biblia.apps.sentenca.SentencaApp;
-import br.com.biblia.apps.versiculo.VersiculoApp;
-import br.com.biblia.dao.VersiculoDAO;
 import br.com.biblia.model.sentenca.Sentenca;
 import br.com.biblia.test.base.VersiculoBaseTest;
 
@@ -33,16 +29,30 @@ public class SentencaAppTest extends VersiculoBaseTest {
 	
 	@Test
 	public void testSearchSentencasByTermo() {
-		List<Sentenca> lstSentenca = app.searchSentencasByTermo("trombeta", true);
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("trombeta", true, false);
 		Assert.assertNotNull(lstSentenca);
 		Assert.assertEquals(81, lstSentenca.size());
 	}
 	
 	@Test
 	public void testSearchSentencasByTermoWhenIsUppercase() {
-		List<Sentenca> lstSentenca = app.searchSentencasByTermo("TrOmBetA", true);
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("TrOmBetA", true, false);
 		Assert.assertNotNull(lstSentenca);
 		Assert.assertEquals(81, lstSentenca.size());
+	}
+
+	@Test
+	public void testSearchSentencasByTermoIgnoringAccentWhenIsUppercaseAndHasAccent() {
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("ASSÍRIA", false, true);
+		Assert.assertNotNull(lstSentenca);
+		Assert.assertEquals(0, lstSentenca.size());
+	}
+
+	@Test
+	public void testSearchSentencasByTermoIgnoringAccentAndCaseSensitiveWhenIsUppercaseAndHasAccent() {
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("ASSÍRIA", true, true);
+		Assert.assertNotNull(lstSentenca);
+		Assert.assertEquals(127, lstSentenca.size());
 	}
 	
 	@Test

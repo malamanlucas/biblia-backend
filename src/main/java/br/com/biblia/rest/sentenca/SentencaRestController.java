@@ -1,4 +1,4 @@
-package br.com.biblia.rest;
+package br.com.biblia.rest.sentenca;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class SentencaRestController {
 		} else {
 			result = app.searchSentencasByTermo(termo, ignoreCase, ignoreAccent);
 		}
-		List<String> textos = result.stream().map(e -> e.getTextoMontado()).collect(Collectors.toList());
+		List<SentencaTexto> textos = result.stream().map(SentencaTexto::new).collect(Collectors.toList());
 		
 		Map<String, Object> map = Maps.newHashMap();
 		
