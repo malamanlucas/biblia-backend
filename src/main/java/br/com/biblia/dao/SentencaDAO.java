@@ -11,10 +11,22 @@ import br.com.biblia.model.sentenca.Sentenca;
 
 public interface SentencaDAO extends JpaRepository<Sentenca, Integer> {
 	
+	@Query("SELECT s FROM Sentenca s WHERE s.texto LIKE :#{'%' + #termo + '%'}"
+			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
+	List<Sentenca> searchByTermoWithCaseSensitive(@Param("termo") String termo);
+
+	@Query("SELECT s FROM Sentenca s WHERE unaccent(s.texto) LIKE unaccent(:#{'%' + #termo + '%'})"
+			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
+	List<Sentenca> searchByTermoWithCaseSensitiveAndAccent(@Param("termo") String termo);
+	
 	@Query("SELECT s FROM Sentenca s WHERE LOWER(s.texto) LIKE LOWER(:#{'%' + #termo + '%'})"
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
-	List<Sentenca> searchByTermo(@Param("termo") String termo);
+	List<Sentenca> searchByTermoWithCaseInsensitive(@Param("termo") String termo);
 	
+	@Query("SELECT s FROM Sentenca s WHERE unaccent(LOWER(s.texto)) LIKE unaccent(LOWER(:#{'%' + #termo + '%'}))"
+			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
+	List<Sentenca> searchByTermoWithCaseInsensitiveAndAccent(@Param("termo") String termo);
+
 	@Query("SELECT s FROM Sentenca s"
 			+ " WHERE (s.sigla = :#{#cordenada.livroEnum.siglaEmPortugues} "
 			+ "AND :#{#cordenada.capitulos.start} = 0) "
@@ -29,12 +41,5 @@ public interface SentencaDAO extends JpaRepository<Sentenca, Integer> {
 			+ "s.versiculo BETWEEN :#{#cordenada.versiculos.start} AND :#{#cordenada.versiculos.end}) "
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
 	List<Sentenca> searchByCordenada(@Param("cordenada") Cordenada cordenada);
-
-	List<Sentenca> findBytextoContaining(String termo);
-
-	List<Sentenca> findBytextoContainingIgnoreCase(String termo);
-	
-	
-	
 	
 }

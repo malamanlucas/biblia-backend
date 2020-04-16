@@ -6,7 +6,7 @@ import br.com.biblia.model.sentenca.Sentenca;
 
 public interface SentencaApp {
 
-	List<Sentenca> searchSentencasByTermo(String termo, Boolean ignoreCase);
+	List<Sentenca> searchSentencasByTermo(String termo, Boolean ignoreCase, Boolean ignoreAccent);
 	List<Sentenca> searchSentencasByCordenada(String termo);
 	
 }

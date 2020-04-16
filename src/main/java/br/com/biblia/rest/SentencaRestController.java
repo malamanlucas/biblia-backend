@@ -25,18 +25,14 @@ public class SentencaRestController {
     private SentencaApp app;
     
     @GetMapping(value="/")
-    public List<Sentenca> findAll(String termo) {
-        return app.searchSentencasByTermo(termo, true);
-    }
-    
-    @GetMapping(value="/format")
-    public Map<String, Object> format(String termo, @RequestParam(defaultValue="true") Boolean ignoreCase) {
-    	System.err.println(termo + ", " + ignoreCase);
+    public Map<String, Object> format(String termo, 
+    		@RequestParam(defaultValue="true") Boolean ignoreCase,
+    		@RequestParam(defaultValue="true") Boolean ignoreAccent) {
     	List<Sentenca> result = null;
 		if (needSearchByCordenada(termo)) {
 			result = app.searchSentencasByCordenada(termo);
 		} else {
-			result = app.searchSentencasByTermo(termo, ignoreCase);
+			result = app.searchSentencasByTermo(termo, ignoreCase, ignoreAccent);
 		}
 		List<String> textos = result.stream().map(e -> e.getTextoMontado()).collect(Collectors.toList());
 		
