@@ -7,10 +7,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import br.com.biblia.apps.sentenca.SentencaApp;
@@ -24,15 +27,16 @@ public class SentencaRestController {
 	@Autowired
     private SentencaApp app;
     
-    @GetMapping(value="/")
+    @PostMapping(value="/")
     public Map<String, Object> format(String termo, 
     		@RequestParam(defaultValue="true") Boolean ignoreCase,
-    		@RequestParam(defaultValue="true") Boolean ignoreAccent) {
+    		@RequestParam(defaultValue="true") Boolean ignoreAccent,
+    		@RequestBody List<Integer> versoes) {
     	List<Sentenca> result = null;
 		if (needSearchByCordenada(termo)) {
-			result = app.searchSentencasByCordenada(termo);
+			result = app.searchSentencasByCordenada(termo, versoes);
 		} else {
-			result = app.searchSentencasByTermo(termo, ignoreCase, ignoreAccent);
+			result = app.searchSentencasByTermo(termo, ignoreCase, ignoreAccent, versoes);
 		}
 		List<SentencaTexto> textos = result.stream().map(SentencaTexto::new).collect(Collectors.toList());
 		

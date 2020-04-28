@@ -1,5 +1,6 @@
 package br.com.biblia.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,11 +24,14 @@ public class Versao {
 	@Id
 	private Integer id;
 	
+	@Column(name = "idioma_id")
+	private Integer idiomaId;
+	
 	private String abreviacao;
 	
 	private String nome;
 	
-	@JsonIgnore
+	@JsonIgnore 
 	@OneToOne
 	@JoinColumn(name="idioma_id", referencedColumnName="id", insertable=false, updatable=false)
 	private Idioma idioma;

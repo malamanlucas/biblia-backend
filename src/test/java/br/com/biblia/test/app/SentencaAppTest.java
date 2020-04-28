@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.google.common.collect.Lists;
+
 import br.com.biblia.Application;
 import br.com.biblia.apps.sentenca.SentencaApp;
 import br.com.biblia.model.sentenca.Sentenca;
@@ -24,62 +26,64 @@ import br.com.biblia.test.base.VersiculoBaseTest;
 @Rollback
 public class SentencaAppTest extends VersiculoBaseTest {
 
+	private static final List<Integer> VERSAO_ID_FOR_TEST = Lists.newArrayList(1);
 	@Autowired
 	SentencaApp app;
 	
 	@Test
 	public void testSearchSentencasByTermo() {
-		List<Sentenca> lstSentenca = app.searchSentencasByTermo("trombeta", true, false);
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("trombeta", true, false, VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(lstSentenca);
 		Assert.assertEquals(81, lstSentenca.size());
 	}
 	
 	@Test
 	public void testSearchSentencasByTermoWhenIsUppercase() {
-		List<Sentenca> lstSentenca = app.searchSentencasByTermo("TrOmBetA", true, false);
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("TrOmBetA", true, false, VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(lstSentenca);
 		Assert.assertEquals(81, lstSentenca.size());
 	}
 
 	@Test
 	public void testSearchSentencasByTermoIgnoringAccentWhenIsUppercaseAndHasAccent() {
-		List<Sentenca> lstSentenca = app.searchSentencasByTermo("ASSÍRIA", false, true);
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("ASSÍRIA", false, true, VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(lstSentenca);
 		Assert.assertEquals(0, lstSentenca.size());
 	}
 
 	@Test
 	public void testSearchSentencasByTermoIgnoringAccentAndCaseSensitiveWhenIsUppercaseAndHasAccent() {
-		List<Sentenca> lstSentenca = app.searchSentencasByTermo("ASSÍRIA", true, true);
+		List<Sentenca> lstSentenca = app.searchSentencasByTermo("ASSÍRIA", true, true, VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(lstSentenca);
 		Assert.assertEquals(127, lstSentenca.size());
 	}
 	
 	@Test
 	public void deveTrazerTodosOsVersiculosDeMateus() {
-		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt");
+		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt", VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(sentencasFounded);
-		Assert.assertEquals(getAllVersiculosMateus().size(), sentencasFounded.size());
+		Assert.assertEquals(getAllVersiculosMateus(VERSAO_ID_FOR_TEST).size(), sentencasFounded.size());
 	}
 	
 	@Test
 	public void deveTrazerTodosOsVersiculosDeMateus1() {
-		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1");
+		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1", VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(sentencasFounded);
-		Assert.assertEquals(getMateus1().getVersiculos().size(), sentencasFounded.size());
+		System.out.println(sentencasFounded.size());
+		Assert.assertEquals(getMateus1(VERSAO_ID_FOR_TEST).getVersiculos().size(), sentencasFounded.size());
 	}
 	
 	@Test
 	public void deveTrazerTodosOsVersiculosDeMateus1_10ao13() {
-		System.out.println(getMateus1().getVersiculos().size());
-		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1.10-13");
+		System.out.println(getMateus1(VERSAO_ID_FOR_TEST).getVersiculos().size());
+		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1.10-13", VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(sentencasFounded);
-		Assert.assertEquals(getMateus1_10ao13().getVersiculos().size(), sentencasFounded.size());
+		Assert.assertEquals(getMateus1_10ao13(VERSAO_ID_FOR_TEST).getVersiculos().size(), sentencasFounded.size());
 	}
 	
 	@Test
 	public void deveTrazerTodosOsVersiculosDeMateus1_2() {
-		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1.2");
+		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("Mt 1.2", VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(sentencasFounded);
 		Assert.assertEquals(1, sentencasFounded.size());
 		Assert.assertEquals(getMateus1_2().getTexto(), sentencasFounded.get(0).getTexto());
@@ -87,10 +91,10 @@ public class SentencaAppTest extends VersiculoBaseTest {
 	
 	@Test
 	public void deveTrazerTodosOsVersiculosDe1Corintios1_4() {
-		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("1 Co 1.4");
+		List<Sentenca> sentencasFounded = app.searchSentencasByCordenada("1 Co 1.4", VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(sentencasFounded);
-		Assert.assertEquals(get1Corintios1_4().getVersiculos().size(), sentencasFounded.size());
-		Assert.assertEquals(get1Corintios1_4().getVersiculos().get(0).getTexto(), sentencasFounded.get(0).getTexto());
+		Assert.assertEquals(get1Corintios1_4(VERSAO_ID_FOR_TEST).getVersiculos().size(), sentencasFounded.size());
+		Assert.assertEquals(get1Corintios1_4(VERSAO_ID_FOR_TEST).getVersiculos().get(0).getTexto(), sentencasFounded.get(0).getTexto());
 	}
 	
 	

@@ -2,17 +2,14 @@ package br.com.biblia.model.livro;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Lists;
 
@@ -51,10 +48,10 @@ public class Livro {
 	
 	private String sigla;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="livro")
-	private List<Capitulo> capitulos;
+	@Transient @JsonIgnore
+	private List<Capitulo> capitulos = Lists.newArrayList();
 	
-	@Transient
+	@Transient @JsonIgnore
 	private List<Versiculo> versiculos = Lists.newArrayList();
 		
 }

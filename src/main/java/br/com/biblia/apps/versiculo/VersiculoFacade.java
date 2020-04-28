@@ -85,8 +85,8 @@ public class VersiculoFacade implements VersiculoApp {
 	}
 
 	@Override
-	public Integer qtdOcorrenciasTermo(String termo) {
-		return dao.getOcorrenciasTermo(termo);
+	public Integer qtdOcorrenciasTermo(String termo, Integer versaoId) {
+		return dao.getOcorrenciasTermo(termo, versaoId);
 	}
 
 	@Override

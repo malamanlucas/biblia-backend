@@ -18,7 +18,7 @@ public interface CapituloApp {
 	void deleteById(CapituloKey key);
 	void deleteByLivro(Integer livroId);
 	
-	List<Capitulo> searchByLivro(Integer livroId);
+	List<Capitulo> searchByLivro(Integer livroId, List<Integer> versoes);
 	
 	
 }

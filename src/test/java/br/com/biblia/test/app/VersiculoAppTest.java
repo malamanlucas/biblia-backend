@@ -59,7 +59,7 @@ public class VersiculoAppTest extends VersiculoBaseTest {
 	
 	@Test
 	public void testCountOcorrenciasTermo() {
-		Integer qtd = app.qtdOcorrenciasTermo("trombeta");
+		Integer qtd = app.qtdOcorrenciasTermo("trombeta", 1);
 		
 		Assert.assertNotNull(qtd);
 		Assert.assertEquals(new Integer(81), qtd);

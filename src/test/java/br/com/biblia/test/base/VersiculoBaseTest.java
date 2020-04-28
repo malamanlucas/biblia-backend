@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
+import br.com.biblia.dao.CapituloDAO;
 import br.com.biblia.dao.LivroDAO;
 import br.com.biblia.dao.VersiculoDAO;
 import br.com.biblia.enums.LivroEnum;
@@ -28,20 +29,20 @@ public abstract class VersiculoBaseTest {
 	@Autowired
     private VersiculoDAO versiculoDAO;
 	
+	@Autowired
+	private CapituloDAO capituloDAO;
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
 	
-	protected List<Versiculo> getAllVersiculosMateus() {
-		return getMateus().getVersiculos();
+	protected List<Versiculo> getAllVersiculosMateus(List<Integer> versoes) {
+		return getMateus(versoes).getVersiculos();
 	}
 	
-	protected List<Capitulo> getAllCapitulosMateus() {
-		return getMateus().getCapitulos();
-	}
-
-	private Livro getMateus() {
+	private Livro getMateus(List<Integer> versoes) {
 		Livro mateus = livroDAO.findByNome(LivroEnum.MATEUS.getNomeNoBD());
+		mateus.setCapitulos( capituloDAO.searchByLivro(mateus.getId(), versoes) );
 		mateus.getCapitulos().sort((a,b) -> a.getKey().getId() > b.getKey().getId() ? 1 : -1);
 		mateus.getCapitulos().forEach(c -> {
 			c.setVersiculos(versiculoDAO.search(c.getKey()));
@@ -50,8 +51,9 @@ public abstract class VersiculoBaseTest {
 		return mateus;
 	}
 	
-	private Livro get1Corintios() {
+	private Livro get1Corintios(List<Integer> versoes) {
 		Livro mateus = livroDAO.findByNome(LivroEnum.PRIMEIRA_CORINTIOS.getNomeNoBD());
+		mateus.setCapitulos( capituloDAO.searchByLivro(mateus.getId(), versoes) );
 		mateus.getCapitulos().sort((a,b) -> a.getKey().getId() > b.getKey().getId() ? 1 : -1);
 		mateus.getCapitulos().forEach(c -> {
 			c.setVersiculos(versiculoDAO.search(c.getKey()));
@@ -60,8 +62,8 @@ public abstract class VersiculoBaseTest {
 		return mateus;
 	}
 	
-	protected Capitulo get1Corintios1_4() {
-		Capitulo capitulo = this.get1Corintios().getCapitulos().get(0);
+	protected Capitulo get1Corintios1_4(List<Integer> versoes) {
+		Capitulo capitulo = this.get1Corintios(versoes).getCapitulos().get(0);
 		List<Versiculo> verisculosFiltered = capitulo.getVersiculos().stream().filter(v -> {
 			Integer id = v.getKey().getId();
 			return id == 4;
@@ -70,12 +72,12 @@ public abstract class VersiculoBaseTest {
 		return capitulo;
 	}
 	
-	protected Capitulo getMateus1() {
-		return this.getMateus().getCapitulos().get(0);
+	protected Capitulo getMateus1(List<Integer> versoes) {
+		return this.getMateus(versoes).getCapitulos().get(0);
 	}
 	
-	protected Capitulo getMateus1_10ao13() {
-		Capitulo capitulo = this.getMateus().getCapitulos().get(0);
+	protected Capitulo getMateus1_10ao13(List<Integer> versoes) {
+		Capitulo capitulo = this.getMateus(versoes).getCapitulos().get(0);
 		List<Versiculo> verisculosFiltered = capitulo.getVersiculos().stream().filter(v -> {
 			Integer id = v.getKey().getId();
 			return id >= 10 && id <= 13;

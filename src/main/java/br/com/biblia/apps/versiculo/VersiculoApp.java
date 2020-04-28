@@ -20,7 +20,7 @@ public interface VersiculoApp {
 	
 	void salvarExpressao(Expressao expressao);
 
-	Integer qtdOcorrenciasTermo(String termo);
+	Integer qtdOcorrenciasTermo(String termo, Integer versaoId);
 	
 	Versiculo findOne(VersiculoKey key);
 	

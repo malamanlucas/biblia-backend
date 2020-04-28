@@ -1,19 +1,17 @@
 package br.com.biblia.apps.importador;
 
 import java.net.URI;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.common.collect.Lists;
 
+import br.com.biblia.apps.versao.VersaoApp;
 import br.com.biblia.apps.versiculo.VersiculoApp;
 import br.com.biblia.dao.CapituloDAO;
 import br.com.biblia.dao.LivroDAO;
@@ -35,8 +33,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Service
-public class ImportarACF {
+public class ImportarFromBibliaBDCN {
 	
+	private static final String PORTUGUES = "Português";
+
+	private static final int VERSAO_ACF_FOR_EXISTENT_CAPITULO = 1;
+
+	private static final int VERSAO_ID_NVI = 3;
+
 	@Autowired
 	VersiculoApp app;
 	
@@ -52,6 +56,9 @@ public class ImportarACF {
 	@Autowired
 	private LivroDetalheDAO livroDetalheDAO;
 	
+	@Autowired
+	private VersaoApp versaoApp;
+	
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -60,28 +67,54 @@ public class ImportarACF {
 		private String text;
 	}
 	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	static class BibliaToImport {
+		String nomeVersao;
+		String abreviacao;
+		String idioma;
+	}
+	
 	public void executar() {
-		Versao versao = createVersaoIfNoExists();
+		List<BibliaToImport> lst = Lists.newArrayList();
 		
-//		for (AcfLivroEnum acfLivroEnum : new AcfLivroEnum[] { AcfLivroEnum.JUDAS }) {
-		for (AcfLivroEnum acfLivroEnum : AcfLivroEnum.values()) {
-			LivroEnum livroEnum = acfLivroEnum.getLivroEnum();
+		lst.add(new BibliaToImport("Nova Versão Internacional (NVI)", "nvi", PORTUGUES));
+		lst.add(new BibliaToImport("Almeida Revisada Imprensa Bíblica (AA)", "aa", PORTUGUES));
+		lst.add(new BibliaToImport("Almeida Revisada Corrigida (ARC)", "arc", PORTUGUES));
+		lst.add(new BibliaToImport("Almeida Revisada Corrigida 1969 (ARC69)", "rc69", PORTUGUES));
+		lst.add(new BibliaToImport("Almeida Revisada Atualizada (ARA)", "ara", PORTUGUES));
+		lst.add(new BibliaToImport("Nova Versão Transformadora (NVT)", "nvt", PORTUGUES));
+		lst.add(new BibliaToImport("O Livro (Ol)", "ol", PORTUGUES));
+		lst.add(new BibliaToImport("Sociedade Biblica Britânica (TB)", "tb", PORTUGUES));
+		lst.add(new BibliaToImport("Versão Católica (VC)", "vc", PORTUGUES));
+		lst.forEach(b -> {
+			exec(b.getNomeVersao(), b.getAbreviacao(), b.getIdioma());
+		});
+	}
+
+
+	private void exec(String nomeVersao, String abreviacao, String idioma) {
+		Versao versao = this.versaoApp.getOrCreateIfNotExists(nomeVersao, abreviacao, idioma);
+		
+		for (BcdnLivroEnum bdcnLivroEnum : BcdnLivroEnum.values()) {
+			LivroEnum livroEnum = bdcnLivroEnum.getLivroEnum();
 			Livro livro = livroDAO.findByNome(livroEnum.getNomeNoBD());
 			
-			if (areVersesCreated(acfLivroEnum, versao, livro)) {
-				System.out.println(StringUtils.join(livro.getNome(), " já está criado"));
+			if (areVersesCreated(bdcnLivroEnum, versao, livro)) {
+				System.out.println(StringUtils.join(abreviacao, " - ", livro.getNome(), " já está criado"));
 				continue;
 			} 
-			System.out.println(StringUtils.join(livro.getNome(), " Cadastrando..."));
+			System.out.println(StringUtils.join(abreviacao, " - ", livro.getNome(), " Cadastrando..."));
 			for (int capitulo = 1; capitulo <= livroEnum.getQtdCapitulo(); capitulo++) {
 				Integer capituloId = capitulo; 
-				Integer livroNumber = acfLivroEnum.getLivroNumber();
+				Integer livroNumber = bdcnLivroEnum.getLivroNumber();
 				 if (areVersesCreatedAtThisCharpter(versao, livro, capituloId)) {
-					System.out.println(StringUtils.join(livro.getNome(), "-", capituloId, " já está criado"));
+					System.out.println(StringUtils.join(abreviacao, " - ", livro.getNome(), "-", capituloId, " já está criado"));
 					continue;
 				}
-				System.out.println(StringUtils.join(livro.getNome(), "-", capituloId, " cadastrando..."));
-				String urlFormatted = String.format("https://biblias.com.br/acfonline-versos?livro=%d&capitulo=%d", livroNumber, capitulo);
+				System.out.println(StringUtils.join(abreviacao, " - ", livro.getNome(), "-", capituloId, " cadastrando..."));
+				String urlFormatted = String.format("https://data.bcdn.in/v19/bibles/nvi/%d/%d.xml", livroNumber, capitulo);
 				List<VerseExtracted> versesExtracted = extract(urlFormatted);
 				
 				createLivroDetalhesIfNotExists(capituloId, livro, versao);
@@ -98,7 +131,7 @@ public class ImportarACF {
 					v.setQtdAumentado(0);
 					VersiculoKey key = VersiculoKey.builder()
 							.capituloId(capituloEntity.getKey().getId())
-							.id(ve.getNumber())
+							.id(v.getNumero())
 							.livroId(livro.getId())
 							.versaoId(versao.getId())
 							.build();
@@ -116,23 +149,9 @@ public class ImportarACF {
 				> 1;
 	}
 
-
-	public <T> Iterable<T> 
-    getIterableFromIterator(Iterator<T> iterator) 
-    { 
-        return new Iterable<T>() { 
-            @Override
-            public Iterator<T> iterator() 
-            { 
-                return iterator; 
-            } 
-        }; 
-    } 
-  
-	
-	private boolean areVersesCreated(AcfLivroEnum acfLivroEnum, Versao versao, Livro livro) {
+	private boolean areVersesCreated(BcdnLivroEnum nviLivroEnum, Versao versao, Livro livro) {
 		return this.versiculoDAO.countByVersaoAndLivro(versao.getId(), livro.getId())
-						.equals( acfLivroEnum.getLivroEnum().getQtdCapitulo() );
+						.equals( nviLivroEnum.getLivroEnum().getQtdCapitulo() );
 	}
 
 	private void createLivroDetalhesIfNotExists(Integer capituloId, Livro livro, Versao versao) {
@@ -151,7 +170,7 @@ public class ImportarACF {
 		Optional<Capitulo> findById = capituloDAO.findById(capituloKey);
 		if (!findById.isPresent()) {
 			Capitulo capitulo = new Capitulo( capituloKey );
-			CapituloKey existentCapituloKey = new CapituloKey(capituloKey.getId(), capituloKey.getLivroId(), 1);
+			CapituloKey existentCapituloKey = new CapituloKey(capituloKey.getId(), capituloKey.getLivroId(), VERSAO_ACF_FOR_EXISTENT_CAPITULO);
 			capitulo.setTitulo( capituloDAO.findById(existentCapituloKey).get().getTitulo() );
 			capituloDAO.save(capitulo);
 			return capitulo;
@@ -162,62 +181,29 @@ public class ImportarACF {
 	@Autowired
 	VersaoDAO versaoDAO;
 
-	private Versao createVersaoIfNoExists() {
-		Optional<Versao> findById = versaoDAO.findById(2);
-		
-		if (!findById.isPresent()) {
-			Idioma portugues = new Idioma(1, "Português");
-			Versao versao = new Versao(2, portugues.getId(), "ACF", "Almeida Corrigida Fiel", portugues);
-			versaoDAO.save(versao);
-			return versao;
-		}
-		
-		return findById.get();
-		
-	}
-//	public static void main(String[] args) throws Exception {
-
 	private List<VerseExtracted> extract(String urlFormatted) {
 		List<VerseExtracted> lst = Lists.newArrayList();
-		Document doc = null;
-		doc = retrieveDoc(urlFormatted);
+		CapituloXml capituloXml = null;
+		capituloXml = retrieveDoc(urlFormatted);
 		
-		Elements elements = doc.getElementsByTag("div");
+		for (int versiculo = 0; versiculo < capituloXml.getVersiculos().size(); versiculo++) {
+			VersiculoXml versiculoXml = capituloXml.getVersiculos().get(versiculo);	
+			lst.add(new VerseExtracted(versiculo+1, versiculoXml.getContent().replaceAll("\\\\", "")));
+		}
 		
-		elements.forEach(e -> {
-			String verseNumber = e.children().get(0).text();
-			verseNumber = verseNumber.replace('.', ' ');
-			verseNumber = verseNumber.trim();
-			String verseText = e.children().get(1).text();
-			lst.add(new VerseExtracted(Integer.parseInt(verseNumber), verseText));
-		});
 		return lst;
 	}
-
-
-	private Document retrieveDoc(String url) {
-		Document doc = null;
+	
+	private CapituloXml retrieveDoc(String urlFormatted) {
 		try {
-			doc = Jsoup.parse(URI.create(url).toURL(), 9000);
-			return doc;
+			RestTemplate restTemplate = new RestTemplate();
+			URI url = URI.create(urlFormatted);
+			CapituloXml capituloXml = restTemplate.getForObject(url, CapituloXml.class);
+			return capituloXml;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return this.retrieveDoc(url);
+			throw new RuntimeException(e);
 		}
 	}
-	
-//		String xml = "<chapter osisID=\"Ezek.28\">"
-//				+ "<verse osisID=\"Ezek.28.1\">¶ E veio a mim a palavra do SENHOR, dizendo:</verse>"
-//				+ "<verse osisID=\"Ezek.28.2\">ballbal:</verse>"
-//				+ "</chapter>";
-//		
-//		JAXBContext context = JAXBContext.newInstance(CapituloXml.class);
-//		CapituloXml capitulo = (CapituloXml) context.createUnmarshaller().unmarshal(new StringReader(xml));
-		
-//		System.out.println(capitulo);
-		
-		
-		
-//	}
 	
 }
