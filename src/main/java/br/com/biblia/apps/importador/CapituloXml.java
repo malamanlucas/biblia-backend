@@ -15,14 +15,10 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CapituloXml {
 	
-	@XmlAttribute(name="osisID")
-	private String osisID; 
+	@XmlAttribute(name="id")
+	private String id; 
 	
-	@XmlElement(name="verse")
+	@XmlElement(name="p")
 	private List<VersiculoXml> versiculos;
-	
-	public Integer getCapituloId() {
-		return Integer.valueOf(this.osisID.substring(osisID.indexOf('.')+1));
-	}
 	
 }

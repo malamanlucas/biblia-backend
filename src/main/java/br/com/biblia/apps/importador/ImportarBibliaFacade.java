@@ -12,6 +12,7 @@ import java.util.concurrent.Future;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -45,34 +46,53 @@ public class ImportarBibliaFacade implements ImportarBiblia {
 	static JdbcTemplate jdbcTemplate;
 	
 	public static void main(String[] args) {
-		LivroEnum[] values = LivroEnum.values();
-//		LivroEnum[] values = new LivroEnum[] { LivroEnum.SALMOS };
-		DataSource dataSource = DataSourceBuilder
-				.create()
-				.password("postgres")
-				.username("postgres")
-				.driverClassName("org.postgresql.Driver")
-				.url("jdbc:postgresql://localhost:5432/postgres")
-				.build();
-		jdbcTemplate = new JdbcTemplate(dataSource);
-			
-		for (LivroEnum enum1 : values) {
-			if (!enum1.isNovoTestamento() || enum1 == LivroEnum.MATEUS)
-				continue;
-			System.out.println("Inserindo: "+enum1.name());
-			long start = System.currentTimeMillis();
-			internalImport(enum1);
-			
-			while(true) {
-				boolean terminou = allTasks.stream().filter(i -> !i.isDone()).toArray().length == 0;
-				
-				if (terminou) {
-					break;
-				}
-			}
-			System.out.println("Demorou: " + (System.currentTimeMillis() - start));
-			
+		
+		Document doc = null;
+		try {
+			String url = "https://biblias.com.br/acfonline-versos?livro=27&capitulo=1";
+			doc = Jsoup.parse(URI.create(url).toURL(), 9000);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+		Elements elements = doc.getElementsByTag("div");
+		
+		elements.forEach(e -> {
+			String verseNumber = e.children().get(0).text();
+			verseNumber = verseNumber.replace('.', ' ');
+			verseNumber = verseNumber.trim();
+			String verseText = e.children().get(1).text();
+			System.out.println(StringUtils.join(verseNumber, " - ", verseText));
+		});
+		
+//		LivroEnum[] values = LivroEnum.values();
+////		LivroEnum[] values = new LivroEnum[] { LivroEnum.SALMOS };
+//		DataSource dataSource = DataSourceBuilder
+//				.create()
+//				.password("postgres")
+//				.username("postgres")
+//				.driverClassName("org.postgresql.Driver")
+//				.url("jdbc:postgresql://localhost:5432/postgres")
+//				.build();
+//		jdbcTemplate = new JdbcTemplate(dataSource);
+//			
+//		for (LivroEnum enum1 : values) {
+//			if (!enum1.isNovoTestamento() || enum1 == LivroEnum.MATEUS)
+//				continue;
+//			System.out.println("Inserindo: "+enum1.name());
+//			long start = System.currentTimeMillis();
+//			internalImport(enum1);
+//			
+//			while(true) {
+//				boolean terminou = allTasks.stream().filter(i -> !i.isDone()).toArray().length == 0;
+//				
+//				if (terminou) {
+//					break;
+//				}
+//			}
+//			System.out.println("Demorou: " + (System.currentTimeMillis() - start));
+//			
+//		}
 		
 	}
 		

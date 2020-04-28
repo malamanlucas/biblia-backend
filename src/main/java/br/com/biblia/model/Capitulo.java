@@ -34,11 +34,6 @@ public class Capitulo {
 	@EmbeddedId
 	private CapituloKey key = new CapituloKey();
 	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name="livro_id", referencedColumnName="id", insertable=false, updatable=false)
-	private Livro livro;
-	
 	private String titulo;
 	
 	@Transient

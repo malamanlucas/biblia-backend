@@ -11,34 +11,39 @@ import br.com.biblia.model.sentenca.Sentenca;
 
 public interface SentencaDAO extends JpaRepository<Sentenca, Integer> {
 	
-	@Query("SELECT s FROM Sentenca s WHERE s.texto LIKE :#{'%' + #termo + '%'}"
+	@Query("SELECT s FROM Sentenca s WHERE s.versaoId IN (:versoes) AND "
+			+ "s.texto LIKE :#{'%' + #termo + '%'}"
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
-	List<Sentenca> searchByTermoWithCaseSensitive(@Param("termo") String termo);
+	List<Sentenca> searchByTermoWithCaseSensitive(@Param("termo") String termo, @Param("versoes") List<Integer> versoes);
 
-	@Query("SELECT s FROM Sentenca s WHERE unaccent(s.texto) LIKE unaccent(:#{'%' + #termo + '%'})"
+	@Query("SELECT s FROM Sentenca s WHERE s.versaoId IN (:versoes) AND "
+			+ "unaccent(s.texto) LIKE unaccent(:#{'%' + #termo + '%'})"
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
-	List<Sentenca> searchByTermoWithCaseSensitiveAndAccent(@Param("termo") String termo);
+	List<Sentenca> searchByTermoWithCaseSensitiveAndAccent(@Param("termo") String termo, @Param("versoes") List<Integer> versoes);
 	
-	@Query("SELECT s FROM Sentenca s WHERE LOWER(s.texto) LIKE LOWER(:#{'%' + #termo + '%'})"
+	@Query("SELECT s FROM Sentenca s WHERE s.versaoId IN (:versoes) AND "
+			+ "LOWER(s.texto) LIKE LOWER(:#{'%' + #termo + '%'})"
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
-	List<Sentenca> searchByTermoWithCaseInsensitive(@Param("termo") String termo);
+	List<Sentenca> searchByTermoWithCaseInsensitive(@Param("termo") String termo, @Param("versoes") List<Integer> versoes);
 	
-	@Query("SELECT s FROM Sentenca s WHERE unaccent(LOWER(s.texto)) LIKE unaccent(LOWER(:#{'%' + #termo + '%'}))"
+	@Query("SELECT s FROM Sentenca s WHERE s.versaoId IN (:versoes) AND "
+			+ "unaccent(LOWER(s.texto)) LIKE unaccent(LOWER(:#{'%' + #termo + '%'}))"
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
-	List<Sentenca> searchByTermoWithCaseInsensitiveAndAccent(@Param("termo") String termo);
+	List<Sentenca> searchByTermoWithCaseInsensitiveAndAccent(@Param("termo") String termo, @Param("versoes") List<Integer> versoes);
 
 	@Query("SELECT s FROM Sentenca s"
-			+ " WHERE (s.sigla = :#{#cordenada.livroEnum.siglaEmPortugues} "
-			+ "AND :#{#cordenada.capitulos.start} = 0) "
+			+ " WHERE "
+			+ "(s.sigla = :#{#cordenada.livroEnum.siglaEmPortugues} "
+			+ "AND :#{#cordenada.capitulos.start} = 0) AND s.versaoId IN (:#{#cordenada.versoes}) "
 			+ "OR "
 			+ "(s.sigla = :#{#cordenada.livroEnum.siglaEmPortugues} AND :#{#cordenada.capitulos.start} != 0 AND "
 			+ ":#{#cordenada.versiculos.start} = 0 AND "
-			+ "s.capitulo BETWEEN :#{#cordenada.capitulos.start} AND :#{#cordenada.capitulos.end}) "
+			+ "s.capitulo BETWEEN :#{#cordenada.capitulos.start} AND :#{#cordenada.capitulos.end} AND s.versaoId IN (:#{#cordenada.versoes}) ) "
 			+ "OR "
 			+ "(s.sigla = :#{#cordenada.livroEnum.siglaEmPortugues} AND :#{#cordenada.capitulos.start} != 0 AND "
 			+ ":#{#cordenada.versiculos.start} != 0 AND "
 			+ "s.capitulo BETWEEN :#{#cordenada.capitulos.start} AND :#{#cordenada.capitulos.end} AND "
-			+ "s.versiculo BETWEEN :#{#cordenada.versiculos.start} AND :#{#cordenada.versiculos.end}) "
+			+ "s.versiculo BETWEEN :#{#cordenada.versiculos.start} AND :#{#cordenada.versiculos.end} AND s.versaoId IN (:#{#cordenada.versoes}) ) "
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
 	List<Sentenca> searchByCordenada(@Param("cordenada") Cordenada cordenada);
 	

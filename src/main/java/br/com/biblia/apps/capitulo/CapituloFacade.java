@@ -41,8 +41,8 @@ public class CapituloFacade implements CapituloApp {
 	}
 
 	@Override
-	public List<Capitulo> searchByLivro(Integer livroId) {
-		return dao.searchByLivro( livroId );
+	public List<Capitulo> searchByLivro(Integer livroId, List<Integer> versoes) {
+		return dao.searchByLivro( livroId, versoes );
 	}
 
 	@Override

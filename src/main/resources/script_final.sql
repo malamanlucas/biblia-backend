@@ -92,7 +92,8 @@ CREATE OR REPLACE VIEW sentenca as
 SELECT 
 	ld.versao_id||''||ld.livro_id||''||ld.capitulo_id||''||v.numero as "sentenca_id",
 	l.sigla, l.testamento, l.ordem, ld.capitulo_id, v.numero, v.texto,
-	l.sigla||' '||v.capitulo_id||'.'||v.numero||' '||v.texto  as "texto_montado"
+	l.sigla||' '||v.capitulo_id||'.'||v.numero||' '||v.texto  as "texto_montado",
+	ld.versao_id
 	FROM versiculo v
 INNER JOIN livro_detalhe ld ON (ld.capitulo_id = v.capitulo_id AND ld.livro_id = v.livro_id AND ld.versao_id = v.versao_id)
 INNER JOIN livro l ON (l.id = ld.livro_id)

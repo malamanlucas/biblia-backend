@@ -18,15 +18,25 @@ public interface VersiculoDAO extends JpaRepository<Versiculo, VersiculoKey> {
 	Integer retrieveNextId();
 	
 	@Query(nativeQuery=true, value="SELECT COALESCE(MAX(numero),0)+1 FROM versiculo WHERE livro_id = :#{#key.livroId}"
-	        + " AND capitulo_id = :#{#key.capituloId}")
+	        + " AND capitulo_id = :#{#key.capituloId} AND versao_id = :#{#key.versaoId}" )
 	Integer retrieveNextVerso(@Param("key") VersiculoKey key);
 	
-	@Query("SELECT COUNT(p) FROM Versiculo p WHERE LOWER(p.texto) LIKE :#{'%' + #termo + '%'}")
-	Integer getOcorrenciasTermo(@Param("termo") String termo);
+	@Query("SELECT COUNT(p) FROM Versiculo p WHERE p.key.versaoId = :versaoId AND LOWER(p.texto) LIKE :#{'%' + #termo + '%'}")
+	Integer getOcorrenciasTermo(@Param("termo") String termo, @Param("versaoId") Integer versaoId);
 	
 	@Query("SELECT p FROM Versiculo p WHERE p.key.livroId = :#{#key.livroId} "
-	        + "AND p.key.capituloId = :#{#key.id} ORDER BY id ASC")
+	        + "AND p.key.capituloId = :#{#key.id} "
+	        + "AND p.key.versaoId = :#{#key.versaoId}"
+	        + " ORDER BY id ASC")
 	List<Versiculo> search(@Param("key") CapituloKey key);
+
+	@Query("SELECT COUNT(p) FROM Versiculo p WHERE p.key.livroId = :#{#livroId} AND p.key.versaoId = :#{#versaoId}")
+	Integer countByVersaoAndLivro(@Param("versaoId") Integer versaoId, @Param("livroId") Integer livroId);
+
+	@Query("SELECT COUNT(p) FROM Versiculo p WHERE p.key.livroId = :#{#livroId} "
+			+ "AND p.key.versaoId = :#{#versaoId} AND p.key.capituloId = :#{#capituloId}")
+	Integer countByCapituloAndVersaoAndLivro(@Param("capituloId") Integer capituloId,
+			@Param("versaoId") Integer versaoId, @Param("livroId") Integer livroId);
 	
 	@Transactional
 	@Modifying

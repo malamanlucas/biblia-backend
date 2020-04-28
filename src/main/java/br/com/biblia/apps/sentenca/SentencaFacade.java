@@ -21,20 +21,20 @@ public class SentencaFacade implements SentencaApp {
 	private SentencaDAO sentencaDAO;
 	
 	@Override
-	public List<Sentenca> searchSentencasByTermo(String termo, Boolean ignoreCase, Boolean ignoreAccent) {
+	public List<Sentenca> searchSentencasByTermo(String termo, Boolean ignoreCase, Boolean ignoreAccent, List<Integer> versoes) {
 		if (!ignoreCase && !ignoreAccent) {
-			return sentencaDAO.searchByTermoWithCaseSensitive(termo);
+			return sentencaDAO.searchByTermoWithCaseSensitive(termo, versoes);
 		} else if (ignoreCase && ignoreAccent) {
-			return sentencaDAO.searchByTermoWithCaseInsensitiveAndAccent(termo);
+			return sentencaDAO.searchByTermoWithCaseInsensitiveAndAccent(termo, versoes);
 		} else if (ignoreAccent) {
-			return sentencaDAO.searchByTermoWithCaseSensitiveAndAccent(termo);
+			return sentencaDAO.searchByTermoWithCaseSensitiveAndAccent(termo, versoes);
 		}
 		//else if ignoreCase == true
-		return sentencaDAO.searchByTermoWithCaseInsensitive(termo);
+		return sentencaDAO.searchByTermoWithCaseInsensitive(termo, versoes);
 	}
 	
 	@Override
-	public List<Sentenca> searchSentencasByCordenada(String cordenada) {
+	public List<Sentenca> searchSentencasByCordenada(String cordenada, List<Integer> versoes) {
 		String[] options = customSplit(cordenada);
 		Between capitulos = new Between(0, 0);
 		Between versiculos = new Between(0, 0);
@@ -54,6 +54,7 @@ public class SentencaFacade implements SentencaApp {
 								.livroEnum(LivroEnum.fromSiglaPortugues(options[0]))
 								.capitulos(capitulos)
 								.versiculos(versiculos)
+								.versoes(versoes)
 								.build();
 		return sentencaDAO.searchByCordenada(cordenadaObject);
 	}

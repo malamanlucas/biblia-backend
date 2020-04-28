@@ -41,6 +41,9 @@ public class Sentenca implements Serializable {
 	@Column(name="numero")
 	private Integer versiculo;
 	
+	@Column(name="versao_id")
+	private Integer versaoId;
+	
 	private String texto;
 	
 	@Column(name="texto_montado")

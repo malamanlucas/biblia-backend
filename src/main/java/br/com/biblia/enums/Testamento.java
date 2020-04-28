@@ -1,6 +1,7 @@
 package br.com.biblia.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import lombok.Getter;
@@ -23,12 +24,19 @@ public enum Testamento {
 		this.idioma = idioma;
 	}
 
+	@JsonIgnore
 	public boolean isNovo() {
 		return this == NOVO;
 	}
 	
+	@JsonIgnore
 	public boolean isVelho() {
 		return this == VELHO;
+	}
+
+	@JsonIgnore
+	public boolean isAmbos() {
+		return this == AMBOS;
 	}
 	
 }

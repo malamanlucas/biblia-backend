@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Lists;
+
 import br.com.biblia.apps.capitulo.CapituloApp;
 import br.com.biblia.model.Capitulo;
 
@@ -20,7 +22,7 @@ public class CapituloRestController {
     
     @GetMapping(value="/")
     public List<Capitulo> findAll(@RequestParam("livroId") Integer livroId) {
-        return app.searchByLivro(livroId); 
+        return app.searchByLivro(livroId, Lists.newArrayList(1)); 
     }
     
 }
