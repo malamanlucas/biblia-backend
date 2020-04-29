@@ -1,5 +1,7 @@
 package br.com.biblia.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -11,5 +13,7 @@ public interface VersaoDAO extends JpaRepository<Versao, Integer> {
 	Integer retrieveNextId();
 	
 	public Versao findByAbreviacao(String abreviacao);
+	
+	public List<Versao> findByOrderByIdAsc();
 
 }

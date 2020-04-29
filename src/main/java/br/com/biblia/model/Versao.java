@@ -36,4 +36,5 @@ public class Versao {
 	@JoinColumn(name="idioma_id", referencedColumnName="id", insertable=false, updatable=false)
 	private Idioma idioma;
 	
+	private Boolean padrao;
 }

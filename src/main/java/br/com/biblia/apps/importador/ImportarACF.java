@@ -167,7 +167,7 @@ public class ImportarACF {
 		
 		if (!findById.isPresent()) {
 			Idioma portugues = new Idioma(1, "Português");
-			Versao versao = new Versao(2, portugues.getId(), "ACF", "Almeida Corrigida Fiel", portugues);
+			Versao versao = new Versao(2, portugues.getId(), "ACF", "Almeida Corrigida Fiel", portugues, null);
 			versaoDAO.save(versao);
 			return versao;
 		}

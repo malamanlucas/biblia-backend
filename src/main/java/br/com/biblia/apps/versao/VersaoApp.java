@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.biblia.apps.idioma.IdiomaApp;
 import br.com.biblia.dao.VersaoDAO;
-import br.com.biblia.model.Idioma;
 import br.com.biblia.model.Versao;
 
 @Service
@@ -31,13 +30,13 @@ public class VersaoApp {
 	public Versao getOrCreateIfNotExists(String nomeVersao, String abreviacao, String idioma) {
 		Versao versao = dao.findByAbreviacao(abreviacao.toUpperCase());
 		if (versao == null) {
-			return this.save(new Versao(null, null, abreviacao.toUpperCase(), nomeVersao, null), idioma);
+			return this.save(new Versao(null, null, abreviacao.toUpperCase(), nomeVersao, null, null), idioma);
 		}
 		return versao;
 	}
 
 	public List<Versao> findAll() {
-		return dao.findAll();
+		return dao.findByOrderByIdAsc();
 	}
 	
 }
