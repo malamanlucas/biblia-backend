@@ -93,11 +93,13 @@ SELECT
 	ld.versao_id||''||ld.livro_id||''||ld.capitulo_id||''||v.numero as "sentenca_id",
 	l.sigla, l.testamento, l.ordem, ld.capitulo_id, v.numero, v.texto,
 	l.sigla||' '||v.capitulo_id||'.'||v.numero||' '||v.texto  as "texto_montado",
-	ld.versao_id
+	ld.versao_id, ve.abreviacao as "versao"
 	FROM versiculo v
 INNER JOIN livro_detalhe ld ON (ld.capitulo_id = v.capitulo_id AND ld.livro_id = v.livro_id AND ld.versao_id = v.versao_id)
 INNER JOIN livro l ON (l.id = ld.livro_id)
+INNER JOIN versao ve ON (ve.id = v.versao_id)
 ORDER BY l.testamento DESC, l.ordem, v.capitulo_id, v.numero
+
 
 
 ALTER TABLE livro ADD CONSTRAINT livro_pk PRIMARY KEY(id);
