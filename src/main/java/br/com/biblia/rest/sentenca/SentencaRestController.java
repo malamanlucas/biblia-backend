@@ -5,6 +5,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +24,9 @@ import com.google.common.collect.Maps;
 import br.com.biblia.apps.sentenca.SentencaApp;
 import br.com.biblia.enums.LivroEnum;
 import br.com.biblia.model.sentenca.Sentenca;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @RestController
 @RequestMapping("/api/sentencas")
@@ -58,5 +66,22 @@ public class SentencaRestController {
 				&& Character.isDigit(parts[1].charAt(0));
 		
 	}
+
+	@Data @NoArgsConstructor @AllArgsConstructor
+	static class SentencaJson {
+		@NotNull @NotEmpty List<Integer> versoesId;
+		@NotNull Integer livroId;
+		@NotNull Integer capituloId;
+		@NotNull Integer versiculoId;
+	}
 	
+	@PostMapping("/versoes")
+	List<Sentenca> findByLivroCapituloAndVersiculoAndVersoes(@Valid @RequestBody SentencaJson json) {
+		List<Sentenca> sentencas = this.app.findByLivroCapituloAndVersiculoAndVersoes(json.getVersoesId(), json.getLivroId(), json.getCapituloId(), json.getVersiculoId());
+		sentencas.forEach(s -> {
+			s.setTextoMontado( StringUtils.join("[", s.getVersao(), "] ", s.getTextoMontado()));
+		});
+		return sentencas;
+	}
+
 }

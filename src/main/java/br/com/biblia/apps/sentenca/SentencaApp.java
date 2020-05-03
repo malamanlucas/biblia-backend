@@ -8,5 +8,6 @@ public interface SentencaApp {
 
 	List<Sentenca> searchSentencasByTermo(String termo, Boolean ignoreCase, Boolean ignoreAccent, List<Integer> versoes);
 	List<Sentenca> searchSentencasByCordenada(String termo,  List<Integer> versoes);
+	List<Sentenca> findByLivroCapituloAndVersiculoAndVersoes(List<Integer> versoesID, Integer livroId, Integer capituloId, Integer versiculoId);
 	
 }

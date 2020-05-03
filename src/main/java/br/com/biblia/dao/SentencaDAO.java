@@ -47,4 +47,6 @@ public interface SentencaDAO extends JpaRepository<Sentenca, Integer> {
 			+ " ORDER BY s.testamento DESC, s.ordemLivro, s.capitulo, s.versiculo")
 	List<Sentenca> searchByCordenada(@Param("cordenada") Cordenada cordenada);
 	
+	List<Sentenca> findByVersaoIdInAndLivroIdAndCapituloAndVersiculo(List<Integer> versoesID, Integer livroId, Integer capituloId, Integer versiculoId);
+	
 }

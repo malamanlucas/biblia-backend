@@ -15,7 +15,7 @@ CREATE TABLE idioma (
 CREATE TABLE versao (
 	id         INTEGER     NOT NULL,
 	idioma_id  INTEGER     NOT NULL,
-	abreviacao VARCHAR(6)  NOT NULL,
+	abreviacao VARCHAR(10)  NOT NULL,
 	nome       VARCHAR(50) NOT NULL
 );
 
@@ -91,7 +91,7 @@ CREATE TABLE mapa (
 CREATE OR REPLACE VIEW sentenca as 
 SELECT 
 	ld.versao_id||''||ld.livro_id||''||ld.capitulo_id||''||v.numero as "sentenca_id",
-	l.sigla, l.testamento, l.ordem, ld.capitulo_id, v.numero, v.texto,
+	l.sigla, l.testamento, l.ordem, ld.capitulo_id, v.numero, v.texto, l.id as livro_id,
 	l.sigla||' '||v.capitulo_id||'.'||v.numero||' '||v.texto  as "texto_montado",
 	ld.versao_id, ve.abreviacao as "versao"
 	FROM versiculo v

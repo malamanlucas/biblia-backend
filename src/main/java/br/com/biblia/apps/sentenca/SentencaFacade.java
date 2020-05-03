@@ -69,5 +69,12 @@ public class SentencaFacade implements SentencaApp {
 		return options;
 	}
 
+	@Override
+	public List<Sentenca> findByLivroCapituloAndVersiculoAndVersoes(List<Integer> versoesID, Integer livroId, Integer capituloId,
+			Integer versiculoId) {
+		return sentencaDAO
+				.findByVersaoIdInAndLivroIdAndCapituloAndVersiculo(versoesID, livroId, capituloId, versiculoId);
+	}
+
 
 }

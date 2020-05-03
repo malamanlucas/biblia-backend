@@ -8,7 +8,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import br.com.biblia.apps.importador.ImportarACF;
-import br.com.biblia.apps.importador.ImportarFromBibliaBDCN;
+import br.com.biblia.apps.importador.bdcn.ImportarFromBibliaBDCN;
+import br.com.biblia.apps.importador.bkjfiel.ImportarFromBibliaBkj;
 import br.com.biblia.config.AutowireHelper;
 
 @SpringBootApplication

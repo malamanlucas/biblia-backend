@@ -1,25 +1,11 @@
-package br.com.biblia.apps.importador;
+package br.com.biblia.apps.importador.bdcn;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlMixed;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.google.common.collect.Lists;
 
@@ -46,15 +32,9 @@ import lombok.NoArgsConstructor;
 @Service
 public class ImportarFromBibliaBDCN {
 	
-	private static final String NUMERO_VERSICULO_TAG = "v";
-
-	private static final String CAPITULO_TAG = "p";
-
 	private static final String PORTUGUES = "Português";
 
 	private static final int VERSAO_ACF_FOR_EXISTENT_CAPITULO = 1;
-
-	private static final int VERSAO_ID_NVI = 3;
 
 	@Autowired
 	VersiculoApp app;
@@ -74,6 +54,9 @@ public class ImportarFromBibliaBDCN {
 	@Autowired
 	private VersaoApp versaoApp;
 	
+	@Autowired
+	private GetVerseExtractedBdcn getVerseExtracted;
+	
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -91,19 +74,6 @@ public class ImportarFromBibliaBDCN {
 		String idioma;
 	}
 	
-	private static String extractContent(Node versiculo, StringBuilder versiculoContent) {
-		String newContent;
-		if (versiculo.getNodeName().equals("#text")) {
-			newContent = versiculo.getTextContent().trim();
-		} else { // is c
-			newContent = versiculo.getFirstChild().getTextContent();
-		}
-		if (versiculoContent.length() > 0 && newContent.length() > 1) {
-			newContent = " " + newContent;
-		}
-		return newContent;
-	}
-
 	public void executar() {
 		List<BibliaToImport> lst = Lists.newArrayList();
 		
@@ -113,7 +83,7 @@ public class ImportarFromBibliaBDCN {
 		lst.add(new BibliaToImport("Almeida Revisada Corrigida 1969 (ARC69)", "rc69", PORTUGUES));
 		lst.add(new BibliaToImport("Almeida Revisada Atualizada (ARA)", "ara", PORTUGUES));
 		lst.add(new BibliaToImport("Nova Versão Transformadora (NVT)", "nvt", PORTUGUES));
-//		lst.add(new BibliaToImport("O Livro (Ol)", "ol", PORTUGUES));
+		lst.add(new BibliaToImport("O Livro (Ol)", "ol", PORTUGUES));
 		lst.add(new BibliaToImport("Sociedade Biblica Britânica (TB)", "tb", PORTUGUES));
 		lst.add(new BibliaToImport("Versão Católica (VC)", "vc", PORTUGUES));
 		lst.forEach(b -> {
@@ -143,9 +113,9 @@ public class ImportarFromBibliaBDCN {
 					continue;
 				}
 				System.out.println(StringUtils.join(abreviacao, " - ", livro.getNome(), "-", capituloId, " cadastrando..."));
-				String urlFormatted = String.format("https://data.bcdn.in/v19/bibles/%s/%d/%d.xml", 
-						versao.getAbreviacao().toLowerCase(), livroNumber, capitulo);
-				List<VerseExtracted> versesExtracted = extract(urlFormatted);
+				String urlFormatted = String.format("https://data.bcdn.in/v20/bibles/%s/%s/%d.xml", 
+						versao.getAbreviacao().toLowerCase(), livroEnum.getSiglaEmIngles(), capitulo);
+				List<VerseExtracted> versesExtracted = getVerseExtracted.extract(urlFormatted);
 				
 				createLivroDetalhesIfNotExists(capituloId, livro, versao);
 				Capitulo capituloEntity = createCapituloIfNotExists(capituloId, livro, versao);
@@ -211,73 +181,4 @@ public class ImportarFromBibliaBDCN {
 	@Autowired
 	VersaoDAO versaoDAO;
 
-	private List<VerseExtracted> extract(String urlFormatted) {
-		try {
-			String response = extractResponse(urlFormatted);
-			Document document = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder().parse(IOUtils.toInputStream(response));
-			NodeList blocosVersiculos = document.getFirstChild().getChildNodes();
-			
-			List<VerseExtracted> lst = Lists.newArrayList();
-			for (int i = 0; i < blocosVersiculos.getLength(); i++) {
-				Node item = blocosVersiculos.item(i);
-				if (item.getNodeName().equals(CAPITULO_TAG)) {
-					NodeList versiculos = item.getChildNodes();
-					Node versiculo = null;
-					for (int versiculoIndex = 0; versiculoIndex < versiculos.getLength(); versiculoIndex++) {
-						versiculo = versiculos.item(versiculoIndex);
-						if (versiculo.getNodeName().equals(NUMERO_VERSICULO_TAG)) {
-							String numeroVersiculo = versiculo.getAttributes().getNamedItem("n").getNodeValue();
-							versiculoIndex++;
-							StringBuilder versiculoContent = new StringBuilder();
-							versiculo = versiculos.item(versiculoIndex);
-							do {
-								String nodeName = versiculo.getNodeName();
-								boolean tagsExpectedForExtractVerse = Stream.of("#text", "c").anyMatch(c -> c.equals(nodeName));
-								if (!tagsExpectedForExtractVerse) {
-									throw new RuntimeException("Tag not expected for rextracted verse: " + nodeName);
-								}
-								String replaceAll = extractContent(versiculo, versiculoContent).replaceAll("\\\\", "");
-								versiculoContent.append(replaceAll.replaceAll("\"", "'"));
-								versiculoIndex++;
-								if (versiculoIndex == versiculos.getLength()) break;
-								versiculo = versiculos.item(versiculoIndex);
-							} while (!versiculo.getNodeName().equals(NUMERO_VERSICULO_TAG));
-							versiculoIndex--;
-							lst.add(new VerseExtracted(Integer.valueOf(numeroVersiculo), versiculoContent.toString()));
-						}
-					}
-				}
-			}
-			return lst;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
-
-	private String extractResponse(String urlFormatted) {
-		try {
-			RestTemplate restTemplate = new RestTemplate();
-			URI url = URI.create(urlFormatted);
-			return restTemplate.getForObject(url, String.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
-	
-	private CapituloXml retrieveDoc(String urlFormatted) {
-		try {
-			RestTemplate restTemplate = new RestTemplate();
-			URI url = URI.create(urlFormatted);
-//			System.out.println(urlFormatted);
-			CapituloXml capituloXml = restTemplate.getForObject(url, CapituloXml.class);
-			return capituloXml;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
-	
 }

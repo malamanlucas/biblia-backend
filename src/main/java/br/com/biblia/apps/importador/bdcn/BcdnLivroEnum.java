@@ -1,4 +1,4 @@
-package br.com.biblia.apps.importador;
+package br.com.biblia.apps.importador.bdcn;
 
 import br.com.biblia.enums.LivroEnum;
 import lombok.Getter;
@@ -49,7 +49,7 @@ public enum BcdnLivroEnum {
 	LUCAS ("LUCAS", 42),
 	JOAO ("JOAO", 43),
 	ATOS ("ATOS", 44),
-	ROMANOS ("ROMANOS", 45),
+//	ROMANOS ("ROMANOS", 45),
 	PRIMEIRA_CORINTIOS ("PRIMEIRA_CORINTIOS", 46),
 	SEGUNDA_CORINTIOS ("SEGUNDA_CORINTIOS", 47),
 	GALATAS ("GALATAS", 48),
@@ -63,7 +63,7 @@ public enum BcdnLivroEnum {
 	TITO ("TITO", 56),
 	FILEMOM ("FILEMOM", 57),
 	HEBREUS ("HEBREUS", 58),
-	TIAGO ("TIAGO", 59),
+//	TIAGO ("TIAGO", 59),
 	PRIMEIRA_PEDRO ("PRIMEIRA_PEDRO", 60),
 	SEGUNDA_PEDRO ("SEGUNDA_PEDRO", 61),
 	PRIMEIRA_JOAO ("PRIMEIRA_JOAO", 62),
