@@ -1,0 +1,1 @@
+cd ~/projects/igrejadosloucos/idl-frontend && pm2 start --name idl-frontend "npm run dev-backend" && cd ~/projects/biblia-backend && pm2 start --name backend "mvn spring-boot:run"

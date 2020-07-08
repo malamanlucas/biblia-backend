@@ -1,6 +1,7 @@
-package br.com.biblia.apps.importador.bdcn;
+package br.com.biblia.apps.importador.sbb;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -15,17 +16,24 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.collect.Lists;
 
-import br.com.biblia.apps.importador.CapituloXml;
-import br.com.biblia.apps.importador.bdcn.ImportarFromBibliaBDCN.VerseExtracted;
+import br.com.biblia.apps.importador.sbb.ImportarFromBibliaSbb.VerseExtracted;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Service
-public class GetVerseExtractedBdcn {
+public class GetVerseExtractedSbb {
 	
 	private static final String NUMERO_VERSICULO_TAG = "v";
 
 	private static final String CAPITULO_TAG = "p";
 
-	public List<VerseExtracted> extract(String urlFormatted) {
+	public List<VerseExtracted> extract(String livroKey, Integer capituloId) {
+		String urlFormatted = "";
+		return x(urlFormatted);
+	}
+
+	private List<VerseExtracted> x(String urlFormatted) {
 		try {
 			String response = extractResponse(urlFormatted);
 			Document document = DocumentBuilderFactory.newInstance()
@@ -93,5 +101,5 @@ public class GetVerseExtractedBdcn {
 		}
 		return newContent;
 	}
-	
+
 }
