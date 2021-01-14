@@ -1,1 +1,1 @@
-/usr/bin/pg_dump --host localhost --port 5432 --username "postgres" --format plain --no-owner --encoding UTF8 --inserts --column-inserts --no-privileges --no-tablespaces --no-unlogged-table-data --file "backup_biblia-backend-postgresql.sql" "postgres"
+pg_dump --host localhost --port 5432 --username "postgres" --format plain --no-owner --encoding UTF8 --inserts --column-inserts --no-privileges --no-tablespaces --no-unlogged-table-data --file "backup_biblia-backend-postgresql.sql" "postgres"

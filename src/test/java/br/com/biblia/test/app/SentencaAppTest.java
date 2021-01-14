@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,7 @@ public class SentencaAppTest extends VersiculoBaseTest {
 		Assert.assertEquals(0, lstSentenca.size());
 	}
 
-	@Test
+	@Test @Ignore
 	public void testSearchSentencasByTermoIgnoringAccentAndCaseSensitiveWhenIsUppercaseAndHasAccent() {
 		List<Sentenca> lstSentenca = app.searchSentencasByTermo("ASSÍRIA", true, true, VERSAO_ID_FOR_TEST);
 		Assert.assertNotNull(lstSentenca);
