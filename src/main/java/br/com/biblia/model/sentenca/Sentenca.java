@@ -51,7 +51,13 @@ public class Sentenca implements Serializable {
 	
 	@Column(name="texto_montado")
 	private String textoMontado;
-	
+
+	@Column(name="texto_limpo")
+	private String textolimpo;
+
+	@Column(name="texto_com_versiculo")
+	private String textoComVersiculo;
+
 	private String versao;
 	
 }

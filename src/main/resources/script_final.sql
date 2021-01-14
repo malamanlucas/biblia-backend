@@ -93,6 +93,8 @@ SELECT
 	ld.versao_id||''||ld.livro_id||''||ld.capitulo_id||''||v.numero as "sentenca_id",
 	l.sigla, l.testamento, l.ordem, ld.capitulo_id, v.numero, v.texto, l.id as livro_id,
 	l.sigla||' '||v.capitulo_id||'.'||v.numero||' '||v.texto  as "texto_montado",
+	v.texto as "texto_limpo",
+	v.numero||' '||v.texto  as "texto_com_versiculo",
 	ld.versao_id, ve.abreviacao as "versao"
 	FROM versiculo v
 INNER JOIN livro_detalhe ld ON (ld.capitulo_id = v.capitulo_id AND ld.livro_id = v.livro_id AND ld.versao_id = v.versao_id)
