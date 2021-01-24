@@ -31,7 +31,7 @@ public class SentencaAppTest extends VersiculoBaseTest {
 	private static final List<Integer> VERSAO_ID_FOR_TEST = Lists.newArrayList(1);
 	@Autowired
 	SentencaApp app;
-	
+
 	@Test
 	public void testSearchSentencasByVersiculoKeyAndVersoes() {
 		List<Integer> versoesID = Lists.newArrayList(2, 4, 8, 12);
@@ -39,15 +39,17 @@ public class SentencaAppTest extends VersiculoBaseTest {
 		Integer capituloId = 1;
 		Integer versiculoId = 1;
 		List<Sentenca> sentencas = app.findByLivroCapituloAndVersiculoAndVersoes(versoesID, livroId, capituloId, versiculoId);
-		Assert.assertEquals(3, sentencas.size());
-		Assert.assertEquals(Lists.newArrayList("ACF", "AA", "NVT"), sentencas.stream().map(s -> s.getVersao()).collect(Collectors.toList()));
+		Assert.assertEquals(4, sentencas.size());
+		Assert.assertEquals(Lists.newArrayList("ACF", "AA", "NVT", "BKJ1611"), sentencas.stream().map(s -> s.getVersao()).collect(Collectors.toList()));
 		String acfText = "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus.";
 		String aaText = "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus.";
 		String nvtText = "No princípio, aquele que é a Palavra já existia.";
+		String bkjText = "No princípio era a Palavra, e a Palavra estava com Deus, e a Palavra era Deus.";
 		Assert.assertTrue(sentencas.stream().anyMatch(s -> acfText.equals(s.getTexto())));
 		Assert.assertTrue(sentencas.stream().anyMatch(s -> aaText.equals(s.getTexto())));
 		Assert.assertTrue(sentencas.stream().anyMatch(s -> nvtText.equals(s.getTexto())));
-		
+		Assert.assertTrue(sentencas.stream().anyMatch(s -> bkjText.equals(s.getTexto())));
+
 	}
 	
 	@Test

@@ -19,6 +19,7 @@ public class Application {
 		Locale.setDefault(new Locale("pt", "BR"));
 		ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
 //		ctx.getBean(ImportarFromBibliaBDCN.class).executar();
+//		ctx.getBean(ImportarFromBibliaBkj.class).executar();
 	}
 	
 	@Bean

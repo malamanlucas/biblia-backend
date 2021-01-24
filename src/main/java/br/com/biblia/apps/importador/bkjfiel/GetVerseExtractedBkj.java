@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -47,7 +48,8 @@ public class GetVerseExtractedBkj {
 	private List<ResponseVerseBkj> extractResponse(String livroKey, Integer capituloId) {
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			URI url = URI.create("http://www.bkjfiel.com.br/api/verses");
+			restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+			URI url = URI.create("https://www.bkjfiel.com.br/api/verses");
 			BodyBkj request = new BodyBkj(livroKey, String.valueOf(capituloId));
 			ResponseVerseBkj[] lst = restTemplate.postForObject(url, request, ResponseVerseBkj[].class);
 			return Arrays.asList(lst);
