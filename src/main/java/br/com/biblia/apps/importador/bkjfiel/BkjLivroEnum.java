@@ -61,7 +61,7 @@ public enum BkjLivroEnum {
 	PRIMEIRA_TIMOTEO ("PRIMEIRA_TIMOTEO", "1tm"),
 	SEGUNDA_TIMOTEO ("SEGUNDA_TIMOTEO", "2tm"),
 	TITO ("TITO", "tt"),
-	FILEMOM ("FILEMOM", "fl"),
+	FILEMOM ("FILEMOM", "fm"),
 	HEBREUS ("HEBREUS", "hb"),
 	TIAGO ("TIAGO", "tg"),
 	PRIMEIRA_PEDRO ("PRIMEIRA_PEDRO", "1pe"),
