@@ -2,6 +2,7 @@ package br.com.biblia;
 
 import java.util.Locale;
 
+import br.com.biblia.apps.importador.bibliatodo.ImportarFromBibliaTodo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -20,6 +21,7 @@ public class Application {
 		ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
 //		ctx.getBean(ImportarFromBibliaBDCN.class).executar();
 //		ctx.getBean(ImportarFromBibliaBkj.class).executar();
+//		ctx.getBean(ImportarFromBibliaTodo.class).executar();
 	}
 	
 	@Bean

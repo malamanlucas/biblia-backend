@@ -60,7 +60,7 @@ public class ImportarFromBibliaSbb {
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	static class VerseExtracted {
+	public static class VerseExtracted {
 		private Integer number;
 		private String text;
 	}
