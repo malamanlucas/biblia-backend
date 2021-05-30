@@ -1,36 +1,28 @@
 package br.com.biblia;
 
-import java.io.File;
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-
-import org.springframework.util.StringUtils;
-
-import br.com.biblia.enums.LivroEnum;
+import java.nio.file.Path;
 
 public class Main {
 
-	public static void main(String[] args) throws Exception {
-//		String s = "/home/lucasm/Documents/livros_detalhes_old.txt";
-//		FileOutputStream fileOutputStream = new FileOutputStream(new File(s));
-//		System.out.println(fileOutputStream);
-		
-		String termo = "Jó b";
-		String termo2 = "1 Jo 3.3";
-				
-		String[] split = termo.split(" ");
-		LivroEnum livroEnum = LivroEnum.fromSiglaPortugues(split[0]);
-		System.out.println(livroEnum != null && Character.isDigit(split[1].charAt(0)));
-		
-//		List<String> readAllLines = Files.readAllLines(Paths.get(new File(s).toURI()));
-//		readAllLines.stream().forEach(c -> {
-//			if (c.indexOf('"') != -1) {
-//				System.out.println(c.substring(0, c.indexOf('"')-2)+");");
-//			}
-//		});
-//		
-	}
-	
+
+//	public static void main(String[] args) throws Exception {
+//		PDFMergerUtility ut = new PDFMergerUtility();
+//		ut.addSource(getFile("/Users/ucoliveira/Downloads/ate 132.pdf"));
+//		ut.addSource(getFile("/Users/ucoliveira/Downloads/até 135.pdf"));
+//		ut.setDestinationFileName("/Users/ucoliveira/ferramentas/bla.pdf");
+//		ut.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+//	}
+//
+//	private static InputStream getFile(String path) throws IOException {
+//		Path ate132 = Path.of(path);
+//		InputStream inputStream = Files.newInputStream(ate132);
+//		return inputStream;
+//	}
+
 }
